@@ -20,6 +20,6 @@ export class TokenChecking {
 
     #redirectToLogin() {
         const pageNumber = this.urlService.getPageNumberFromUrl();
-        window.location.href = `../login/login.html?page=${pageNumber}`;
+        window.location.href = `../login.html?${pageNumber}`;
     }
 }

@@ -24,6 +24,6 @@ export class GalleryService {
     }
 
     redirectToPage(pageNumber) {
-        window.location.href = `../gallery/gallery.html?page=${pageNumber}`;
+        window.location.href = `../gallery.html?page=${pageNumber}`;
     }
 }
