@@ -3,6 +3,10 @@ import { GalleryAPI } from "./gallery.api.js";
 import { GalleryURL } from "./gallery.url.js";
 
 export class GalleryManager {
+    render: RenderGalleryHTML;
+    api: GalleryAPI;
+    url: GalleryURL;
+
     constructor() {
         this.render = new RenderGalleryHTML();
         this.api = new GalleryAPI();
