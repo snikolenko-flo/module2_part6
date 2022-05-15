@@ -1,6 +1,6 @@
 export class GalleryService {
-    wrapUrlsInHtml(urlsList) {
-        let images = '';
+    wrapUrlsInHtml(urlsList: URL[]) {
+        let images: string = '';
 
         urlsList.forEach(function(url) {
             images += `<div class="gallery">
@@ -11,8 +11,8 @@ export class GalleryService {
         return images;
     }
 
-    wrapNumbersInHtml(totalPages) {
-        let pagesList = '';
+    wrapNumbersInHtml(totalPages: number) {
+        let pagesList: string = '';
 
         for (let i=1; i<=totalPages; i++) {
             pagesList += `<a href="">
@@ -23,7 +23,7 @@ export class GalleryService {
         return pagesList;
     }
 
-    redirectToPage(pageNumber) {
+    redirectToPage(pageNumber: number) {
         window.location.href = `../gallery.html?page=${pageNumber}`;
     }
 }
