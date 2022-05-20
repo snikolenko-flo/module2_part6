@@ -1,13 +1,12 @@
 export class GalleryURL {
-    getClickedPageNumber(event) {
-        const clickedPageNumber = Number(event.target.innerText);
+    getClickedPageNumber(clickedPageNumber:number) {
 
         if (clickedPageNumber) {
             return clickedPageNumber;
         }
     }
 
-    addPageToUrl(pageNumber) {
+    addPageToUrl(pageNumber:number) {
         const urlInAddressBar = `./gallery.html?page=${pageNumber}`;
         history.replaceState({}, '', urlInAddressBar);
     }

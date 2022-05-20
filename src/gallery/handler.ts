@@ -19,8 +19,9 @@ export async function loadGallery() {
 
 export async function fetchGallery(event: Event) {
     event.preventDefault();
+    const pageNumber = Number((event.target as HTMLElement).innerText);
 
-    const clickedPageNumber: number = manager.url.getClickedPageNumber(event);
+    const clickedPageNumber = manager.url.getClickedPageNumber(pageNumber);
     if (!clickedPageNumber) return;
 
     try {
