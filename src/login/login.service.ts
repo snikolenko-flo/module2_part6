@@ -1,25 +1,27 @@
 import { BASE_URL } from "../data/constants.js";
 import { UrlManipulationService } from "../services/url-manipulation.service.js";
 import { GalleryService } from "../gallery/gallery.service.js";
+import { ValidationResult } from "../interfaces/validate";
+import { TokenResponse } from "../interfaces/token";
 
 const urlService = new UrlManipulationService();
 const galleryService = new GalleryService();
 
 export class LoginService {
     redirectToGallery() {
-        const pageNumber = urlService.getPageNumberFromUrl();
+        const pageNumber: number = urlService.getPageNumberFromUrl();
         galleryService.redirectToPage(pageNumber);
     }
 
-    handleEmailValidation(validatedEmail, emailErrorElement) {
+    handleEmailValidation(validatedEmail: ValidationResult, emailError: HTMLFormElement) {
         if (!validatedEmail.isValid) {
-            emailErrorElement.innerHTML = 'Email is not valid!'
+            emailError.innerHTML = 'Email is not valid!'
         } else {
-            emailErrorElement.innerHTML = '';
+            emailError.innerHTML = '';
         }
     }
 
-    handlePasswordValidation(validatedPassword, passwordErrorElement) {
+    handlePasswordValidation(validatedPassword: ValidationResult, passwordErrorElement: HTMLFormElement) {
         if (!validatedPassword.isValid) {
             passwordErrorElement.innerHTML = validatedPassword.error;
         } else {
@@ -27,27 +29,27 @@ export class LoginService {
         }
     }
 
-    validateUserData(email, password) {
-        const validatedEmail = this.validateEmail(email);
-        const validatedPassword = this.validatePassword(password);
+    validateUserData(email: string, password: string) {
+        const validatedEmail: ValidationResult = this.validateEmail(email);
+        const validatedPassword: ValidationResult = this.validatePassword(password);
 
         return validatedEmail.isValid && validatedPassword.isValid;
     }
 
-    async fetchToken(email, password) {
+    async fetchToken(email: string, password: string) {
         const user = {
             email: email,
             password: password
         };
 
-        const url = `${BASE_URL}/login`;
+        const url: string = `${BASE_URL}/login`;
 
         const response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify(user)
         });
 
-        const result = await response.json();
+        const result: TokenResponse = await response.json();
 
         if (response.ok) {
             return result;
@@ -56,13 +58,13 @@ export class LoginService {
         }
     }
 
-    validateEmail(email) {
+    validateEmail(email: string) {
         let userEmail = {
             isValid: false
         }
 
-        let regexp = /\S+@\S+\.\S+/;
-        const isValid = regexp.test(email);
+        let regexp: RegExp = /\S+@\S+\.\S+/;
+        const isValid: boolean = regexp.test(email);
 
         if (isValid) {
             userEmail.isValid = true;
@@ -71,13 +73,13 @@ export class LoginService {
         return userEmail;
     }
 
-    validatePassword(p) {
+    validatePassword(p: string) {
         const result = {
             isValid: false,
             error: ''
         }
 
-        result.error = this.#checkErrors(p);
+        result.error = this.checkErrors(p);
 
         if (!result.error) {
             result.isValid = true;
@@ -86,7 +88,7 @@ export class LoginService {
         return result;
     }
 
-    #checkErrors(password) {
+    private checkErrors(password: string) {
         if (password.length < 8) return "Your password must be at least 8 characters.";
         if (password.search(/[a-z]/) < 0) return "Your password must contain at least one lowercase letter.";
         if (password.search(/[A-Z]/) < 0) return "Your password must contain at least one uppercase letter.";
