@@ -1,16 +1,16 @@
 export class UrlManipulationService {
     getPageNumberFromUrl() {
-        const currentUrl = window.location.search;
+        const currentUrl: string = window.location.search;
 
-        const searchParams = new URLSearchParams(currentUrl);
-        const page = searchParams.get('page');
-        const defaultPageNumber = 1;
+        const searchParams: URLSearchParams = new URLSearchParams(currentUrl);
+        const page: string = searchParams.get('page');
+        const defaultPageNumber: number = 1;
 
         if (!page) {
             return defaultPageNumber;
         }
 
-        const pageNumber = parseInt(page);
+        const pageNumber: number = parseInt(page);
 
         if (isNaN(pageNumber)) {
             throw Error('The page number should be an integer');
