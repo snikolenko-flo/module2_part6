@@ -7,7 +7,7 @@ export function checkToken() {
     manager.check.checkTokenExists();
 }
 
-export function setToken(token) {
+export function setToken(token: string) {
     manager.set.saveToken(token);
     manager.set.setExpireTime();
 }
