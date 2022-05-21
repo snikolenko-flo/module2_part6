@@ -2,12 +2,12 @@ import { LoginManager } from "./login.manager.js";
 
 const manager = new LoginManager();
 
-export const validateUserInput = (formElement:HTMLElement) => {
+export const validateUserInput = (formElement: HTMLFormElement) => {
     return () => {
-        const emailError = document.getElementById('emailError');
+        const emailError = document.getElementById('emailError') as HTMLFormElement;
         manager.checkEmail(formElement, emailError);
 
-        const passwordError = document.getElementById('passwordError');
+        const passwordError = document.getElementById('passwordError') as HTMLFormElement;
         manager.checkPassword(formElement, passwordError);
     }
 }
