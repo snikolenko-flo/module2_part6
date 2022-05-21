@@ -1,6 +1,6 @@
 import { GalleryService } from "./gallery.service.js";
 
-export class RenderGalleryHTML {
+export class RenderGalleryHtml {
     galleryService: GalleryService;
 
     constructor() {

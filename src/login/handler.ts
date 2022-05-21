@@ -15,8 +15,8 @@ export const validateUserInput = (formElement: HTMLFormElement) => {
 export const submitUserData = async (event: Event) => {
     event.preventDefault();
 
-    const email:string = (event.target as HTMLFormElement).email.value;
-    const password:string = (event.target as HTMLFormElement).password.value;
+    const email: string = (event.target as HTMLFormElement).email.value;
+    const password: string = (event.target as HTMLFormElement).password.value;
 
     if (manager.isUserDataValid(email, password)) {
         await manager.loginUser(email, password);

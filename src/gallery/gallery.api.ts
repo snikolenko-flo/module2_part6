@@ -1,7 +1,7 @@
 import { BASE_URL } from "../data/constants.js";
 import { ImagesResponse } from "../interfaces/response";
 
-export class GalleryAPI {
+export class GalleryApi {
     async fetchImages(pageNumber:number): Promise<ImagesResponse> {
 
         const accessToken = localStorage.getItem('token');

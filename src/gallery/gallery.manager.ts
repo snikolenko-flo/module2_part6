@@ -1,15 +1,15 @@
-import { RenderGalleryHTML } from "./gallery.render.js";
-import { GalleryAPI } from "./gallery.api.js";
-import { GalleryURL } from "./gallery.url.js";
+import { RenderGalleryHtml } from "./gallery.render.js";
+import { GalleryApi } from "./gallery.api.js";
+import { GalleryUrl } from "./gallery.url.js";
 
 export class GalleryManager {
-    render: RenderGalleryHTML;
-    api: GalleryAPI;
-    url: GalleryURL;
+    render: RenderGalleryHtml;
+    api: GalleryApi;
+    url: GalleryUrl;
 
     constructor() {
-        this.render = new RenderGalleryHTML();
-        this.api = new GalleryAPI();
-        this.url = new GalleryURL();
+        this.render = new RenderGalleryHtml();
+        this.api = new GalleryApi();
+        this.url = new GalleryUrl();
     }
 }

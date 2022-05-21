@@ -1,4 +1,4 @@
-export class GalleryURL {
+export class GalleryUrl {
     getClickedPageNumber(clickedPageNumber:number) {
 
         if (clickedPageNumber) {
