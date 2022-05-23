@@ -1,13 +1,16 @@
 import { UrlManipulationService } from "../services/url-manipulation.service.js";
 import { TokenService } from "./token.service.js";
+import { RedirectService } from "../services/redirect.service.js";
 
 export class TokenChecking {
     urlService: UrlManipulationService;
     tokenService: TokenService;
+    redirect: RedirectService;
 
     constructor() {
         this.urlService = new UrlManipulationService();
         this.tokenService = new TokenService();
+        this.redirect = new RedirectService();
     }
 
     checkExpireTime() {
@@ -17,12 +20,7 @@ export class TokenChecking {
 
     checkTokenExists() {
         if (!this.tokenService.tokenExists()) {
-            this.redirectToLogin();
+            this.redirect.redirectToLogin();
         }
-    }
-
-    private redirectToLogin() {
-        const pageNumber: number = this.urlService.getPageNumberFromUrl();
-        window.location.href = `../login.html?page=${pageNumber}`;
     }
 }
