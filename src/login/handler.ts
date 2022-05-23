@@ -4,11 +4,13 @@ const manager = new LoginManager();
 
 export const validateUserInput = (formElement: HTMLFormElement) => {
     return () => {
+        const email: string = formElement.email.value;
         const emailError = document.getElementById('emailError') as HTMLFormElement;
-        manager.checkEmail(formElement, emailError);
+        manager.checkEmail(email, emailError);
 
         const passwordError = document.getElementById('passwordError') as HTMLFormElement;
-        manager.checkPassword(formElement, passwordError);
+        const password: string = formElement.password.value;
+        manager.checkPassword(password, passwordError);
     }
 }
 

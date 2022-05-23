@@ -10,14 +10,12 @@ export class LoginManager {
         this.loginService = new LoginService();
     }
 
-    checkEmail(formElement: HTMLFormElement, emailErrorElement: HTMLFormElement) {
-        const email: string = formElement.email.value;
+    checkEmail(email: string, emailErrorElement: HTMLFormElement) {
         const validatedEmail: ValidationResult = this.loginService.validateEmail(email);
         this.loginService.handleEmailValidation(validatedEmail, emailErrorElement);
     }
 
-    checkPassword(formElement: HTMLFormElement, passwordErrorElement: HTMLFormElement) {
-        const password: string = formElement.password.value;
+    checkPassword(password: string, passwordErrorElement: HTMLFormElement) {
         const validatedPassword: ValidationResult = this.loginService.validatePassword(password);
         this.loginService.handlePasswordValidation(validatedPassword, passwordErrorElement);
     }
