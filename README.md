@@ -34,6 +34,10 @@ There are two main modules: gallery and login.
 Each module has a handler that uses manager methods.
 Manager methods use service methods.
 
+# Building
+
+To build the project run this command from root project directory(module2_part1): npx tsc
+
 # Launching
 
 Run a local server.
