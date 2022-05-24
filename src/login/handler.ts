@@ -2,7 +2,7 @@ import { LoginManager } from "./login.manager.js";
 
 const manager = new LoginManager();
 
-export const validateUserInput = (formElement: HTMLFormElement) => {
+export const validateUserInput = (formElement: HTMLFormElement): () => void => {
     return () => {
         const email: string = formElement.email.value;
         const emailError = document.getElementById('emailError') as HTMLFormElement;
@@ -14,7 +14,7 @@ export const validateUserInput = (formElement: HTMLFormElement) => {
     }
 }
 
-export const submitUserData = async (event: Event) => {
+export const submitUserData = async (event: Event): Promise<void> => {
     event.preventDefault();
 
     const email: string = (event.target as HTMLFormElement).email.value;

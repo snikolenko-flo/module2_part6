@@ -8,12 +8,12 @@ const urlService = new UrlManipulationService();
 const galleryService = new GalleryService();
 
 export class LoginService {
-    redirectToGallery() {
+    redirectToGallery(): void {
         const pageNumber: number = urlService.getPageNumberFromUrl();
         galleryService.redirectToPage(pageNumber);
     }
 
-    handleEmailValidation(validatedEmail: ValidationResult, emailError: HTMLFormElement) {
+    handleEmailValidation(validatedEmail: ValidationResult, emailError: HTMLFormElement): void {
         if (!validatedEmail.isValid) {
             emailError.innerHTML = 'Email is not valid!'
         } else {
@@ -21,7 +21,7 @@ export class LoginService {
         }
     }
 
-    handlePasswordValidation(validatedPassword: ValidationResult, passwordErrorElement: HTMLFormElement) {
+    handlePasswordValidation(validatedPassword: ValidationResult, passwordErrorElement: HTMLFormElement): void {
         if (!validatedPassword.isValid) {
             passwordErrorElement.innerHTML = validatedPassword.error;
         } else {
@@ -29,14 +29,14 @@ export class LoginService {
         }
     }
 
-    validateUserData(email: string, password: string) {
+    validateUserData(email: string, password: string): boolean {
         const validatedEmail: ValidationResult = this.validateEmail(email);
         const validatedPassword: ValidationResult = this.validatePassword(password);
 
         return validatedEmail.isValid && validatedPassword.isValid;
     }
 
-    async fetchToken(email: string, password: string) {
+    async fetchToken(email: string, password: string): Promise<TokenResponse> {
         const user = {
             email: email,
             password: password
@@ -58,7 +58,7 @@ export class LoginService {
         }
     }
 
-    validateEmail(email: string) {
+    validateEmail(email: string): ValidationResult {
         let userEmail = {
             isValid: false
         }
@@ -73,7 +73,7 @@ export class LoginService {
         return userEmail;
     }
 
-    validatePassword(p: string) {
+    validatePassword(p: string): ValidationResult {
         const result = {
             isValid: false,
             error: ''
@@ -88,7 +88,7 @@ export class LoginService {
         return result;
     }
 
-    private checkErrors(password: string) {
+    private checkErrors(password: string): string {
         if (password.length < 8) return "Your password must be at least 8 characters.";
         if (password.search(/[a-z]/) < 0) return "Your password must contain at least one lowercase letter.";
         if (password.search(/[A-Z]/) < 0) return "Your password must contain at least one uppercase letter.";

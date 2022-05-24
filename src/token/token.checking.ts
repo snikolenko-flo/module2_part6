@@ -13,12 +13,12 @@ export class TokenChecking {
         this.redirect = new RedirectService();
     }
 
-    checkExpireTime() {
+    checkExpireTime(): void {
         const timeLeft: number = this.tokenService.getTimeLeft();
         this.tokenService.setExpireTimer(timeLeft);
     }
 
-    checkTokenExists() {
+    checkTokenExists(): void {
         if (!this.tokenService.tokenExists()) {
             this.redirect.redirectToLogin();
         }

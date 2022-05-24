@@ -10,21 +10,21 @@ export class LoginManager {
         this.loginService = new LoginService();
     }
 
-    checkEmail(email: string, emailErrorElement: HTMLFormElement) {
+    checkEmail(email: string, emailErrorElement: HTMLFormElement): void {
         const validatedEmail: ValidationResult = this.loginService.validateEmail(email);
         this.loginService.handleEmailValidation(validatedEmail, emailErrorElement);
     }
 
-    checkPassword(password: string, passwordErrorElement: HTMLFormElement) {
+    checkPassword(password: string, passwordErrorElement: HTMLFormElement): void {
         const validatedPassword: ValidationResult = this.loginService.validatePassword(password);
         this.loginService.handlePasswordValidation(validatedPassword, passwordErrorElement);
     }
 
-    isUserDataValid(email: string, password: string) {
+    isUserDataValid(email: string, password: string): boolean {
         return this.loginService.validateUserData(email, password);
     }
 
-    async loginUser(email: string, password: string) {
+    async loginUser(email: string, password: string): Promise<void> {
         try {
             const result: TokenResponse = await this.loginService.fetchToken(email, password);
             setToken(result.token);

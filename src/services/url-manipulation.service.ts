@@ -1,5 +1,5 @@
 export class UrlManipulationService {
-    getPageNumberFromUrl() {
+    getPageNumberFromUrl(): number {
         const currentUrl: string = window.location.search;
 
         const searchParams: URLSearchParams = new URLSearchParams(currentUrl);

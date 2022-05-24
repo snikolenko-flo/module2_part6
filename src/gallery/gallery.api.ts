@@ -24,7 +24,7 @@ export class GalleryApi {
         }
     }
 
-    getError(response: ImagesResponse) {
+    getError(response: ImagesResponse): string {
         if (response.errorMessage) {
             return response.errorMessage;
         } else {

@@ -7,7 +7,7 @@ export class RedirectService {
         this.urlService = new UrlManipulationService();
     }
 
-    redirectToLogin() {
+    redirectToLogin(): void {
         const pageNumber: number = this.urlService.getPageNumberFromUrl();
         window.location.href = `../login.html?page=${pageNumber}`;
     }

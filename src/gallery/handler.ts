@@ -4,7 +4,7 @@ import { UrlManipulationService } from "../services/url-manipulation.service.js"
 const urlService = new UrlManipulationService();
 const manager = new GalleryManager();
 
-export async function loadGallery() {
+export async function loadGallery(): Promise<void> {
     try {
         const pageNumber: number = urlService.getPageNumberFromUrl();
         const images = await manager.api.fetchImages(pageNumber);
@@ -17,7 +17,7 @@ export async function loadGallery() {
     }
 }
 
-export async function fetchGallery(event: Event) {
+export async function fetchGallery(event: Event): Promise<void> {
     event.preventDefault();
     const pageNumber = Number((event.target as HTMLElement).innerText);
 
