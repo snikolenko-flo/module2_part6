@@ -1,3 +1,2 @@
 export const BASE_URL = 'https://hjdjs55gol.execute-api.us-east-1.amazonaws.com/api';
-export const ONE_MINUTE = 60000;
-export const TEN_MINUTES = 600000;
+export const EXPIRATION_TIME = 10;
