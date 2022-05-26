@@ -1,5 +1,5 @@
-import { TokenSetting } from "./token.setting.js";
-import { TokenChecking } from "./token.checking.js";
+import { TokenSetting } from './token.setting.js';
+import { TokenChecking } from './token.checking.js';
 
 export class TokenManager {
   set: TokenSetting;

@@ -1,8 +1,8 @@
-import { BASE_URL } from "../data/constants.js";
-import { UrlManipulationService } from "../services/url-manipulation.service.js";
-import { GalleryService } from "../gallery/gallery.service.js";
-import { ValidationResult } from "../interfaces/validate";
-import { TokenResponse } from "../interfaces/token";
+import { BASE_URL } from '../data/constants.js';
+import { UrlManipulationService } from '../services/url-manipulation.service.js';
+import { GalleryService } from '../gallery/gallery.service.js';
+import { ValidationResult } from '../interfaces/validate';
+import { TokenResponse } from '../interfaces/token';
 
 const urlService = new UrlManipulationService();
 const galleryService = new GalleryService();
@@ -15,9 +15,9 @@ export class LoginService {
 
   handleEmailValidation(validatedEmail: ValidationResult, emailError: HTMLFormElement): void {
     if (!validatedEmail.isValid) {
-      emailError.innerHTML = "Email is not valid!";
+      emailError.innerHTML = 'Email is not valid!';
     } else {
-      emailError.innerHTML = "";
+      emailError.innerHTML = '';
     }
   }
 
@@ -25,7 +25,7 @@ export class LoginService {
     if (!validatedPassword.isValid) {
       passwordErrorElement.innerHTML = validatedPassword.error;
     } else {
-      passwordErrorElement.innerHTML = "";
+      passwordErrorElement.innerHTML = '';
     }
   }
 
@@ -45,7 +45,7 @@ export class LoginService {
     const url = `${BASE_URL}/login`;
 
     const response = await fetch(url, {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(user),
     });
 
@@ -76,7 +76,7 @@ export class LoginService {
   validatePassword(p: string): ValidationResult {
     const result = {
       isValid: false,
-      error: "",
+      error: '',
     };
 
     result.error = this.checkErrors(p);
@@ -89,9 +89,9 @@ export class LoginService {
   }
 
   private checkErrors(password: string): string {
-    if (password.length < 8) return "Your password must be at least 8 characters.";
-    if (password.search(/[a-z]/) < 0) return "Your password must contain at least one lowercase letter.";
-    if (password.search(/[A-Z]/) < 0) return "Your password must contain at least one uppercase letter.";
-    if (password.search(/[0-9]/) < 0) return "Your password must contain at least one digit.";
+    if (password.length < 8) return 'Your password must be at least 8 characters.';
+    if (password.search(/[a-z]/) < 0) return 'Your password must contain at least one lowercase letter.';
+    if (password.search(/[A-Z]/) < 0) return 'Your password must contain at least one uppercase letter.';
+    if (password.search(/[0-9]/) < 0) return 'Your password must contain at least one digit.';
   }
 }

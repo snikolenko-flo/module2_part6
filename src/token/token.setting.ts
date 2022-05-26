@@ -12,8 +12,7 @@ export class TokenSetting {
   }
 
   setExpireTime(): void {
-    const tenMinutes = EXPIRATION_TIME * this.oneMinuteInMs;
-    const tokenExpireTime: number = Date.now() + tenMinutes;
-    localStorage.setItem('tokenExpireTime', tokenExpireTime.toString());
+    const tokenExpirationTime: number = Date.now() + EXPIRATION_TIME * this.oneMinuteInMs;
+    localStorage.setItem('tokenExpireTime', tokenExpirationTime.toString());
   }
 }

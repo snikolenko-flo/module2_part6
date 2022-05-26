@@ -1,6 +1,6 @@
 export class GalleryService {
   wrapUrlsInHtml(urlsList: URL[]): string {
-    let images = "";
+    let images = '';
 
     urlsList.forEach(function (url) {
       images += `<div class="gallery">
@@ -12,7 +12,7 @@ export class GalleryService {
   }
 
   wrapNumbersInHtml(totalPages: number): string {
-    let pagesList = "";
+    let pagesList = '';
 
     for (let i = 1; i <= totalPages; i++) {
       pagesList += `<a href="">

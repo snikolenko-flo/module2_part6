@@ -1,6 +1,6 @@
-import { UrlManipulationService } from "../services/url-manipulation.service.js";
-import { TokenService } from "./token.service.js";
-import { RedirectService } from "../services/redirect.service.js";
+import { UrlManipulationService } from '../services/url-manipulation.service.js';
+import { TokenService } from './token.service.js';
+import { RedirectService } from '../services/redirect.service.js';
 
 export class TokenChecking {
   urlService: UrlManipulationService;

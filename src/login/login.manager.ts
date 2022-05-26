@@ -1,7 +1,7 @@
-import { LoginService } from "./login.service.js";
-import { setToken } from "../token/handler.js";
-import { ValidationResult } from "../interfaces/validate";
-import { TokenResponse } from "../interfaces/token";
+import { LoginService } from './login.service.js';
+import { setToken } from '../token/handler.js';
+import { ValidationResult } from '../interfaces/validate';
+import { TokenResponse } from '../interfaces/token';
 
 export class LoginManager {
   loginService: LoginService;

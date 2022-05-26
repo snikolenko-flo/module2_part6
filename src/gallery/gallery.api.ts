@@ -1,13 +1,13 @@
-import { BASE_URL } from "../data/constants.js";
-import { ImagesResponse } from "../interfaces/response";
+import { BASE_URL } from '../data/constants.js';
+import { ImagesResponse } from '../interfaces/response';
 
 export class GalleryApi {
   async fetchImages(pageNumber: number): Promise<ImagesResponse> {
-    const accessToken = localStorage.getItem("token");
+    const accessToken = localStorage.getItem('token');
     const url = `${BASE_URL}/gallery?page=${pageNumber}`;
 
     const response = await fetch(url, {
-      method: "GET",
+      method: 'GET',
       headers: {
         Authorization: accessToken,
       },

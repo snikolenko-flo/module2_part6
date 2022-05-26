@@ -1,4 +1,4 @@
-import { GalleryService } from "./gallery.service.js";
+import { GalleryService } from './gallery.service.js';
 
 export class RenderGalleryHtml {
   galleryService: GalleryService;
@@ -8,12 +8,12 @@ export class RenderGalleryHtml {
   }
 
   renderPagesList(totalNumberOfPages: number): void {
-    const pages = document.getElementById("pages");
+    const pages = document.getElementById('pages');
     pages.innerHTML = this.galleryService.wrapNumbersInHtml(totalNumberOfPages);
   }
 
   renderImages(imagesUrls: URL[]): void {
-    const images = document.getElementById("images");
+    const images = document.getElementById('images');
     images.innerHTML = this.galleryService.wrapUrlsInHtml(imagesUrls);
   }
 }
