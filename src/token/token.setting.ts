@@ -1,4 +1,4 @@
-import { ONE_MINUTE } from '../data/constants.js';
+import { TEN_MINUTES } from '../data/constants.js';
 
 export class TokenSetting {
   saveToken(token: string): void {
@@ -6,8 +6,7 @@ export class TokenSetting {
   }
 
   setExpireTime(): void {
-    const tenMinutes: number = ONE_MINUTE * 10;
-    const tokenExpireTime: number = Date.now() + tenMinutes;
+    const tokenExpireTime: number = Date.now() + TEN_MINUTES;
     localStorage.setItem('tokenExpireTime', tokenExpireTime.toString());
   }
 }
