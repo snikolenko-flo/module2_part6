@@ -1,5 +1,5 @@
-import { GalleryManager } from './gallery.manager.js';
-import { UrlManipulationService } from '../services/url-manipulation.service.js';
+import { GalleryManager } from "./gallery.manager.js";
+import { UrlManipulationService } from "../services/url-manipulation.service.js";
 
 const urlService = new UrlManipulationService();
 const manager = new GalleryManager();

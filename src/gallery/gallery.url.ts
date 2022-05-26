@@ -7,6 +7,6 @@ export class GalleryUrl {
 
   addPageToUrl(pageNumber: number): void {
     const urlInAddressBar = `./gallery.html?page=${pageNumber}`;
-    history.replaceState({}, '', urlInAddressBar);
+    history.replaceState({}, "", urlInAddressBar);
   }
 }

@@ -1,4 +1,4 @@
-import { UrlManipulationService } from './url-manipulation.service.js';
+import { UrlManipulationService } from "./url-manipulation.service.js";
 
 export class RedirectService {
   urlService: UrlManipulationService;

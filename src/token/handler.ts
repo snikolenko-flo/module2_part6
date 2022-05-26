@@ -1,4 +1,4 @@
-import { TokenManager } from './token.manager.js';
+import { TokenManager } from "./token.manager.js";
 
 const manager = new TokenManager();
 
