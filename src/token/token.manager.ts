@@ -1,12 +1,12 @@
-import { TokenSetting } from "./token.setting.js";
-import { TokenChecking } from "./token.checking.js";
+import { TokenSetting } from './token.setting.js';
+import { TokenChecking } from './token.checking.js';
 
 export class TokenManager {
-    set: TokenSetting;
-    check: TokenChecking;
+  set: TokenSetting;
+  check: TokenChecking;
 
-    constructor() {
-        this.set = new TokenSetting();
-        this.check = new TokenChecking();
-    }
+  constructor() {
+    this.set = new TokenSetting();
+    this.check = new TokenChecking();
+  }
 }

@@ -1,29 +1,29 @@
 export class GalleryService {
-    wrapUrlsInHtml(urlsList: URL[]): string {
-        let images: string = '';
+  wrapUrlsInHtml(urlsList: URL[]): string {
+    let images = '';
 
-        urlsList.forEach(function(url) {
-            images += `<div class="gallery">
+    urlsList.forEach(function (url) {
+      images += `<div class="gallery">
                            <img src="${url}">
                        </div>`;
-        });
+    });
 
-        return images;
-    }
+    return images;
+  }
 
-    wrapNumbersInHtml(totalPages: number): string {
-        let pagesList: string = '';
+  wrapNumbersInHtml(totalPages: number): string {
+    let pagesList = '';
 
-        for (let i=1; i<=totalPages; i++) {
-            pagesList += `<a href="">
+    for (let i = 1; i <= totalPages; i++) {
+      pagesList += `<a href="">
                               <li>${i}</li>
                           </a>`;
-        }
-
-        return pagesList;
     }
 
-    redirectToPage(pageNumber: number): void {
-        window.location.href = `../gallery.html?page=${pageNumber}`;
-    }
+    return pagesList;
+  }
+
+  redirectToPage(pageNumber: number): void {
+    window.location.href = `../gallery.html?page=${pageNumber}`;
+  }
 }

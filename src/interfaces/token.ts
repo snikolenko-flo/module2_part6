@@ -1,4 +1,4 @@
 export interface TokenResponse {
-    token?: string;
-    errorMessage?: string;
+  token?: string;
+  errorMessage?: string;
 }

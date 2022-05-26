@@ -1,17 +1,17 @@
 export class TokenService {
-    getTimeLeft(): number {
-        const currentTime: number = Date.now();
-        const tokenExpireTime: number = Number(localStorage.getItem('tokenExpireTime'));
-        return tokenExpireTime - currentTime;
-    }
+  getTimeLeft(): number {
+    const currentTime: number = Date.now();
+    const tokenExpireTime = Number(localStorage.getItem('tokenExpireTime'));
+    return tokenExpireTime - currentTime;
+  }
 
-    setExpireTimer(timeLeft: number): void {
-        setTimeout(() => {
-            localStorage.removeItem('token');
-        }, timeLeft);
-    }
+  setExpireTimer(timeLeft: number): void {
+    setTimeout(() => {
+      localStorage.removeItem('token');
+    }, timeLeft);
+  }
 
-    tokenExists(): string {
-        return localStorage.getItem('token');
-    }
+  tokenExists(): string {
+    return localStorage.getItem('token');
+  }
 }
