@@ -10,7 +10,7 @@
     "webpack": "^5.72.1",
     "webpack-cli": "^4.9.2"
   },
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
     "css-loader": "^6.7.1",
     "html-webpack-plugin": "^5.5.0",
@@ -29,7 +29,9 @@
     "build": "npx tsc",
     "prettier_write": " npx prettier --write .",
     "prettier_check": "npx prettier --check .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./built/app.js",
+    "watch": "npx tsc --watch"
   },
   "repository": {
     "type": "git",
