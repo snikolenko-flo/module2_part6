@@ -48,10 +48,9 @@ export class LoginService {
       method: 'POST',
       body: JSON.stringify(user),
     });
-    console.log(response);
-    console.log('everything is ok');
+
     const result: TokenResponse = await response.json();
-    console.log('not ok');
+
     if (response.ok) {
       console.log(result);
       return result;

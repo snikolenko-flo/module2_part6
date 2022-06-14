@@ -12,7 +12,7 @@ export class GalleryApi {
         Authorization: accessToken,
       },
     });
-    alert(response);
+
     const result = (await response.json()) as ImagesResponse;
 
     if (response.ok) {
