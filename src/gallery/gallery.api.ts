@@ -13,7 +13,13 @@ export class GalleryApi {
       },
     });
 
+    console.log('response: ');
+    console.log(response);
+
     const result = (await response.json()) as ImagesResponse;
+
+    console.log('result');
+    console.log(result);
 
     if (response.ok) {
       return result;
