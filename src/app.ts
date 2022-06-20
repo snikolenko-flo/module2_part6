@@ -3,6 +3,7 @@ import { opendir } from 'node:fs/promises';
 import { PER_PAGE } from './data/constants.js';
 import { users } from './data/users.js';
 
+const IMAGES_DIR = './src/images';
 const hostname = '127.0.0.1';
 const port = 3000;
 const frontUrl = 'http://127.0.0.1:5500';
@@ -30,12 +31,14 @@ const server = http.createServer((req, res) => {
       });
     }
 
-    if (url.pathname === '/gallery') {
+    if (url.pathname === '/gallery' && req.method === 'OPTIONS') {
+      res.statusCode = 200;
+      res.end();
+    } else if (url.pathname === '/gallery') {
       setHeaders(res);
       const page = url.searchParams.get('page');
-
-      const total = 5;
       const pageNumber: number = parseInt(page);
+      const total = await getTotalPages(IMAGES_DIR);
 
       if (isNaN(pageNumber)) {
         res.statusCode = 400;
@@ -47,18 +50,13 @@ const server = http.createServer((req, res) => {
         res.statusCode = 400;
         res.end(JSON.stringify({ message: 'Page should be greater than 0 and less than 6' }));
       } else {
-        const totalPages = Number(page) * PER_PAGE;
-        const endIndex = totalPages - 1;
-        const start = endIndex + 1 - PER_PAGE;
-
-        const urls = await openImages();
-        const newArray = urls.slice(start, endIndex + 1);
+        const urls = await getImages(pageNumber);
 
         res.statusCode = 200;
         res.end(
           JSON.stringify({
             total: 5,
-            objects: newArray,
+            objects: urls,
           }),
         );
       }
@@ -70,19 +68,48 @@ server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
 
-async function openImages() {
-  try {
-    const imagesArray = [];
-    const imagesDir = './src/images';
-    const dir = await opendir('./src/images');
+async function getTotalPages(dir) {
+  const filesAmount = await getFilesAmount(dir);
+  return filesAmount / PER_PAGE;
+}
 
+async function getFilesAmount(directory) {
+  try {
+    const dir = await opendir(directory);
+
+    let counter = 0;
     for await (const dirent of dir) {
-      imagesArray.push(imagesDir + '/' + dirent.name);
+      if (!dirent.name.startsWith('.')) {
+        counter++;
+      }
     }
-    return imagesArray;
+    return counter;
   } catch (err) {
     console.error(err);
   }
+}
+
+async function getAllFiles(directory): Promise<string[]> {
+  const files = [];
+  const dir = await opendir(directory);
+
+  for await (const dirent of dir) {
+    if (!dirent.name.startsWith('.')) {
+      files.push(directory + '/' + dirent.name);
+    }
+  }
+  return files;
+}
+
+async function getImagesPerPage(images: string[], page: number, perPage: number) {
+  const endIndex = page * perPage;
+  const start = endIndex - perPage;
+  return images.slice(start, endIndex);
+}
+
+async function getImages(page: number): Promise<string[]> {
+  const images = await getAllFiles(IMAGES_DIR);
+  return await getImagesPerPage(images, page, PER_PAGE);
 }
 
 function setHeaders(res) {
