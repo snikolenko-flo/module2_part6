@@ -1,19 +1,13 @@
-import { users } from '../../data/users.js';
+import { LoginManager } from './login.manager.js';
+
+const manager = new LoginManager();
 
 export async function login(req, res) {
-  let body = '';
-  req.on('data', (chunk) => {
-    body += chunk.toString();
-  });
-  req.on('end', () => {
-    const bodyObj = JSON.parse(body);
-    const user = users.find((item) => item.email == bodyObj.email);
-    if (user.password === bodyObj.password) {
-      res.statusCode = 200;
-      res.end(JSON.stringify({ token: 'token' }));
-    } else {
-      res.statusCode = 401;
-      res.end(JSON.stringify({ errorMessage: 'Email or password are invalid.' }));
-    }
-  });
+  const body = await manager.getBody(req);
+  const user = await manager.findUser(body.email);
+
+  if (!user) return manager.sendLoginError(res);
+  if (user.password !== body.password) return manager.sendLoginError(res);
+
+  manager.sendToken(req, res);
 }
