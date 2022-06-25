@@ -1,5 +1,5 @@
 import * as http from 'http';
-import { opendir } from 'node:fs/promises';
+import { opendir, stat, readdir } from 'node:fs/promises';
 import { PER_PAGE } from './data/constants.js';
 import { users } from './data/users.js';
 
@@ -34,7 +34,7 @@ const server = http.createServer((req, res) => {
     if (url.pathname === '/gallery' && req.method === 'OPTIONS') {
       res.statusCode = 200;
       res.end();
-    } else if (url.pathname === '/gallery') {
+    } else if (url.pathname === '/gallery' && req.method === 'GET') {
       setHeaders(res);
       const page = url.searchParams.get('page');
       const pageNumber: number = parseInt(page);
@@ -42,7 +42,7 @@ const server = http.createServer((req, res) => {
 
       if (isNaN(pageNumber)) {
         res.statusCode = 400;
-        res.end(JSON.stringify({ message: 'The page number should be an integer' }));
+        res.end(JSON.stringify({ message: 'The page number should be an integer bla bla bla' }));
       } else if (!isFinite(pageNumber)) {
         res.statusCode = 400;
         res.end(JSON.stringify({ message: 'The page number should be a finite integer' }));
@@ -70,17 +70,23 @@ server.listen(port, hostname, () => {
 
 async function getTotalPages(dir) {
   const filesAmount = await getFilesAmount(dir);
+  console.log(`filesAmount: ${filesAmount}`);
   return filesAmount / PER_PAGE;
 }
 
-async function getFilesAmount(directory) {
+async function getFilesAmount(directory, counter?) {
   try {
     const dir = await opendir(directory);
 
-    let counter = 0;
+    counter = counter || 0;
     for await (const dirent of dir) {
       if (!dirent.name.startsWith('.')) {
-        counter++;
+        const isDir = await stat(directory + '/' + dirent.name);
+        if (isDir.isDirectory()) {
+          counter = await getFilesAmount(directory + '/' + dirent.name, counter);
+        } else {
+          counter++;
+        }
       }
     }
     return counter;
@@ -89,13 +95,21 @@ async function getFilesAmount(directory) {
   }
 }
 
-async function getAllFiles(directory): Promise<string[]> {
-  const files = [];
+async function getAllFiles(directory, files?: string[]): Promise<string[]> {
+  // const files = [];
   const dir = await opendir(directory);
+
+  files = files || [];
 
   for await (const dirent of dir) {
     if (!dirent.name.startsWith('.')) {
-      files.push(directory + '/' + dirent.name);
+      const isDir = await stat(directory + '/' + dirent.name);
+      if (isDir.isDirectory()) {
+        files = await getAllFiles(directory + '/' + dirent.name, files);
+        console.log(`${dirent.name} is a directory!`);
+      } else {
+        files.push(directory + '/' + dirent.name);
+      }
     }
   }
   return files;
