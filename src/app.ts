@@ -4,7 +4,7 @@ import { getGallery } from './backend/gallery/handler.js';
 import { FRONT_URL, HOST, PORT } from './backend/data/constants.js';
 import { HeaderService } from './backend/services/header.service.js';
 import { getUrl } from './backend/services/url.service.js';
-import { getOptions } from './backend/services/url.service.js';
+import { getOptions } from './backend/services/http.service.js';
 
 const hostname = HOST;
 const port = PORT;
