@@ -13,7 +13,7 @@ export async function getGallery(req, res) {
   if (!isFinite(pageNumber)) return manager.error.sendFiniteError(res);
 
   const total = await manager.file.getTotalPages(IMAGES_DIR);
-  if (pageNumber > total || pageNumber <= 0) return manager.error.sendWrongPageError(res);
+  if (pageNumber > total || pageNumber <= 0) return manager.error.sendWrongPageError(res, total);
 
   const imagesPaths = await manager.file.getImages(pageNumber);
   manager.response.sendImages(res, total, imagesPaths);

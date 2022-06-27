@@ -7,14 +7,16 @@ export class GalleryFile {
       const dir = await opendir(directory);
 
       counter = counter || 0;
-      for await (const dirent of dir) {
-        if (!dirent.name.startsWith('.')) {
-          const isDir = await stat(directory + '/' + dirent.name);
-          if (isDir.isDirectory()) {
-            counter = await this.getFilesAmount(directory + '/' + dirent.name, counter);
-          } else {
-            counter++;
-          }
+
+      for await (const file of dir) {
+        if (file.name.startsWith('.')) continue;
+
+        const isDir = await this.isDirectory(directory + '/' + file.name);
+
+        if (isDir) {
+          counter = await this.getFilesAmount(directory + '/' + file.name, counter);
+        } else {
+          counter++;
         }
       }
       return counter;
@@ -22,9 +24,22 @@ export class GalleryFile {
       console.error(err);
     }
   }
+
+  async isDirectory(filePath) {
+    const isDir = await stat(filePath);
+    return isDir.isDirectory();
+  }
+
   async getTotalPages(dir) {
     const filesAmount = await this.getFilesAmount(dir);
-    return filesAmount / PER_PAGE;
+
+    const defaultPagesNumber = 1;
+    if (filesAmount <= PER_PAGE) return defaultPagesNumber;
+
+    const remainder = filesAmount % PER_PAGE;
+    if (remainder === 0) return filesAmount / PER_PAGE;
+
+    return Math.trunc(filesAmount / PER_PAGE) + remainder;
   }
 
   async getAllFiles(directory, files?: string[]): Promise<string[]> {
@@ -32,14 +47,15 @@ export class GalleryFile {
 
     files = files || [];
 
-    for await (const dirent of dir) {
-      if (!dirent.name.startsWith('.')) {
-        const isDir = await stat(directory + '/' + dirent.name);
-        if (isDir.isDirectory()) {
-          files = await this.getAllFiles(directory + '/' + dirent.name, files);
-        } else {
-          files.push(directory + '/' + dirent.name);
-        }
+    for await (const file of dir) {
+      if (file.name.startsWith('.')) continue;
+
+      const isDir = await this.isDirectory(directory + '/' + file.name);
+
+      if (isDir) {
+        files = await this.getAllFiles(directory + '/' + file.name, files);
+      } else {
+        files.push(directory + '/' + file.name);
       }
     }
     return files;

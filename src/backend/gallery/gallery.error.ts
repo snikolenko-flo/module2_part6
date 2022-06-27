@@ -9,9 +9,9 @@ export class GalleryError {
     res.end(JSON.stringify({ message: 'The page number should be a finite integer bla' }));
   }
 
-  sendWrongPageError(res) {
+  sendWrongPageError(res, total) {
     res.statusCode = 400;
-    res.end(JSON.stringify({ message: 'Page should be greater than 0 and less than 6' }));
+    res.end(JSON.stringify({ message: `Page should be greater than 0 and less than ${total + 1}` }));
   }
 
   sendAuthError(res) {
