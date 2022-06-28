@@ -1,6 +1,6 @@
 import { FRONT_URL } from '../data/constants.js';
 
-export function getUrl(req, base) {
+export function getUrl(req, base: string): URL {
   return new URL(req.url, base);
 }
 

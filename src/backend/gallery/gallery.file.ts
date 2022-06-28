@@ -2,7 +2,7 @@ import { PER_PAGE, IMAGES_DIR } from '../data/constants.js';
 import { opendir, stat } from 'node:fs/promises';
 
 export class GalleryFile {
-  async getFilesAmount(directory, counter?) {
+  async getFilesAmount(directory: string, counter?: number): Promise<number> {
     try {
       const dir = await opendir(directory);
 
@@ -25,12 +25,12 @@ export class GalleryFile {
     }
   }
 
-  async isDirectory(filePath) {
+  async isDirectory(filePath: string): Promise<boolean> {
     const isDir = await stat(filePath);
     return isDir.isDirectory();
   }
 
-  async getTotalPages(dir) {
+  async getTotalPages(dir: string): Promise<number> {
     const filesAmount = await this.getFilesAmount(dir);
 
     const defaultPagesNumber = 1;
@@ -42,7 +42,7 @@ export class GalleryFile {
     return Math.trunc(filesAmount / PER_PAGE) + remainder;
   }
 
-  async getAllFiles(directory, files?: string[]): Promise<string[]> {
+  async getAllFiles(directory: string, files?: string[]): Promise<string[]> {
     const dir = await opendir(directory);
 
     files = files || [];
@@ -61,7 +61,7 @@ export class GalleryFile {
     return files;
   }
 
-  async getImagesPerPage(images: string[], page: number, perPage: number) {
+  async getImagesPerPage(images: string[], page: number, perPage: number): Promise<string[]> {
     const endIndex = page * perPage;
     const start = endIndex - perPage;
     return images.slice(start, endIndex);

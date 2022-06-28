@@ -1,7 +1,8 @@
-import { users } from '../../data/users.js';
+import { users } from '../users/users.js';
+import { User } from '../interfaces/user.js';
 
 export class LoginManager {
-  async getBody(req) {
+  async getBody(req): Promise<User> {
     let body = '';
     await req.on('data', (chunk) => {
       body += chunk.toString();
@@ -9,9 +10,8 @@ export class LoginManager {
     return JSON.parse(body);
   }
 
-  async findUser(user) {
-    const isUser = await users.find((item) => item.email == user);
-    return isUser;
+  findUser(email: string) {
+    return users.find((user) => user.email == email);
   }
 
   sendToken(req, res) {

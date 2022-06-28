@@ -12,13 +12,13 @@ export class UrlManipulationService {
 
     const pageNumber: number = parseInt(page);
 
-    // if (isNaN(pageNumber)) {
-    //   throw Error('The page number should be an integer');
-    // }
-    //
-    // if (!isFinite(pageNumber)) {
-    //   throw Error('The page number should be a finite integer');
-    // }
+    if (isNaN(pageNumber)) {
+      throw Error('The page number should be an integer');
+    }
+
+    if (!isFinite(pageNumber)) {
+      throw Error('The page number should be a finite integer');
+    }
 
     return pageNumber;
   }

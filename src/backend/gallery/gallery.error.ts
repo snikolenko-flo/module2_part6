@@ -1,12 +1,12 @@
 export class GalleryError {
   sendIsNanError(res) {
     res.statusCode = 400;
-    res.end(JSON.stringify({ message: 'The page number should be an integer bla' }));
+    res.end(JSON.stringify({ message: 'The page number should be an integer' }));
   }
 
   sendFiniteError(res) {
     res.statusCode = 400;
-    res.end(JSON.stringify({ message: 'The page number should be a finite integer bla' }));
+    res.end(JSON.stringify({ message: 'The page number should be a finite integer' }));
   }
 
   sendWrongPageError(res, total) {
