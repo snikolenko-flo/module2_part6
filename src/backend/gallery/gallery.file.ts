@@ -33,13 +33,13 @@ export class GalleryFile {
   async getTotalPages(dir: string): Promise<number> {
     const filesAmount = await this.getFilesAmount(dir);
 
-    const defaultPagesNumber = 1;
-    if (filesAmount <= PER_PAGE) return defaultPagesNumber;
+    const onePage = 1;
+    if (filesAmount <= PER_PAGE) return onePage;
 
     const remainder = filesAmount % PER_PAGE;
     if (remainder === 0) return filesAmount / PER_PAGE;
 
-    return Math.trunc(filesAmount / PER_PAGE) + remainder;
+    return Math.trunc(filesAmount / PER_PAGE) + onePage;
   }
 
   async getAllFiles(directory: string, files?: string[]): Promise<string[]> {
