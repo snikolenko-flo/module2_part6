@@ -1,12 +1,13 @@
 import { IMAGES_DIR } from '../data/constants.js';
 import { GalleryManager } from './gallery.manager.js';
-import { checkAuthorization } from '../auth/handler.js';
+import { AuthService } from '../services/auth.service.js';
 import { getPageNumber } from '../services/url.service.js';
 
 const manager = new GalleryManager();
+const auth = new AuthService();
 
 export async function getGallery(req, res) {
-  await checkAuthorization(req, res);
+  await auth.checkAuthorization(req, res);
 
   const pageNumber = getPageNumber(req);
   if (isNaN(pageNumber)) return manager.error.sendIsNanError(res);
