@@ -1,7 +1,9 @@
 import { loadGallery, fetchGallery } from './handler.js';
-import { checkToken } from '../token/handler.js';
+import { TokenService } from '../services/token.service.js';
 
-checkToken();
+const tokenService = new TokenService();
+tokenService.checkToken();
+
 (async () => {
   await loadGallery();
   const pages = document.getElementById('pages');

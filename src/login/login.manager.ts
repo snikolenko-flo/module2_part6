@@ -1,7 +1,9 @@
 import { LoginService } from './login.service.js';
-import { setToken } from '../token/handler.js';
+import { TokenService } from '../services/token.service.js';
 import { ValidationResult } from '../interfaces/validate';
 import { TokenResponse } from '../interfaces/token';
+
+const tokenService = new TokenService();
 
 export class LoginManager {
   loginService: LoginService;
@@ -27,7 +29,7 @@ export class LoginManager {
   async loginUser(email: string, password: string): Promise<void> {
     try {
       const result: TokenResponse = await this.loginService.fetchToken(email, password);
-      setToken(result.token);
+      tokenService.setToken(result.token);
       this.loginService.redirectToGallery();
     } catch (e) {
       alert(e);
