@@ -1,10 +1,12 @@
+import { FRONT_BASE_URL } from '../data/constants.js';
+
 export class GalleryService {
   wrapUrlsInHtml(urlsList: URL[]): string {
     let images = '';
 
     urlsList.forEach(function (url) {
       images += `<div class="gallery">
-                           <img src="${url}">
+                           <img src="${FRONT_BASE_URL}/${url}">
                        </div>`;
     });
 
@@ -24,6 +26,6 @@ export class GalleryService {
   }
 
   redirectToPage(pageNumber: number): void {
-    window.location.href = `../../gallery.html?page=${pageNumber}`;
+    window.location.href = `../frontend/gallery.html?page=${pageNumber}`;
   }
 }

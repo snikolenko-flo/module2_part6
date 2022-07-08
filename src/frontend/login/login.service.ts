@@ -52,7 +52,6 @@ export class LoginService {
     const result: TokenResponse = await response.json();
 
     if (response.ok) {
-      console.log(result);
       return result;
     } else {
       throw Error(result.errorMessage);

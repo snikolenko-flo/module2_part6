@@ -3,6 +3,7 @@ export class UrlManipulationService {
     const currentUrl: string = window.location.search;
 
     const searchParams: URLSearchParams = new URLSearchParams(currentUrl);
+
     const page: string = searchParams.get('page');
     const defaultPageNumber = 1;
 
