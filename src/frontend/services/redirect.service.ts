@@ -9,6 +9,6 @@ export class RedirectService {
 
   redirectToLogin(): void {
     const pageNumber: number = this.urlService.getPageNumberFromUrl();
-    window.location.href = `../frontend/login.html?page=${pageNumber}`;
+    window.location.href = `../login.html?page=${pageNumber}`;
   }
 }

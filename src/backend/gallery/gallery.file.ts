@@ -55,7 +55,8 @@ export class GalleryFile {
       if (isDir) {
         files = await this.getAllFiles(directory + '/' + file.name, files);
       } else {
-        files.push(directory + '/' + file.name);
+        const pathWithoutBuiltFolder = directory.split('/').slice(2).join('/');
+        files.push(pathWithoutBuiltFolder + '/' + file.name);
       }
     }
     return files;
