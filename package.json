@@ -22,7 +22,7 @@
   "scripts": {
     "lint": "eslint . --ext .ts",
     "lint-fix": "eslint . --fix --ext .ts",
-    "build": "npx tsc && cp -a ./src/frontend/html/. ./src/frontend/css/. ./src/images ./built",
+    "build": "npx tsc -p src/backend/tsconfig.json && npx tsc -p src/frontend/tsconfig.json && mkdir ./built && mv ./src/backend/backend ./built && mv ./src/frontend/frontend ./built && cp -a ./src/frontend/html/. ./src/frontend/css/. ./src/images ./built",
     "prettier_write": " npx prettier --write .",
     "prettier_check": "npx prettier --check .",
     "test": "echo \"Error: no test specified\" && exit 1",
