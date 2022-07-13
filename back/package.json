@@ -9,22 +9,15 @@
     "typescript": "^4.7.2"
   },
   "type": "module",
-  "dependencies": {
-    "css-loader": "^6.7.1",
-    "html-webpack-plugin": "^5.5.0",
-    "source-map-loader": "^3.0.1",
-    "style-loader": "^3.3.1",
-    "ts-loader": "^9.3.0"
-  },
   "name": "module2_part1",
   "description": "",
   "version": "1.0.0",
   "scripts": {
-    "lint": "eslint . --ext .ts",
-    "lint-fix": "eslint . --fix --ext .ts",
+    "lint": "eslint  --ext .ts",
+    "lint-fix": "eslint  --fix --ext .ts",
     "build": "npx tsc",
-    "prettier_write": " npx prettier --write .",
-    "prettier_check": "npx prettier --check .",
+    "prettier_write": " npx prettier --write ",
+    "prettier_check": "npx prettier --check ",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon ./built/backend/app.js",
     "watch": "npx tsc --watch"

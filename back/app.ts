@@ -1,9 +1,9 @@
 import * as http from 'http';
-import { HOST, PORT } from './data/constants.js';
-import { HeaderService } from './services/header.service.js';
-import { UrlService } from './services/url.service.js';
-import { loginRouter } from './login/router.js';
-import { galleryRouter } from './gallery/router.js';
+import { HOST, PORT } from './src/data/constants.js';
+import { HeaderService } from './src/services/header.service.js';
+import { UrlService } from './src/services/url.service.js';
+import { loginRouter } from './src/login/router.js';
+import { galleryRouter } from './src/gallery/router.js';
 
 const hostname = HOST;
 const port = PORT;
