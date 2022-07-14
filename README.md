@@ -44,7 +44,7 @@ To start watching the files run the `npm run watch` command from the project roo
 
 Run the command `npm run start` from the project root directory to start the backend.  
 
-Run the local server using VS Code or Webstorm from the `./built/login.html` file.  
+Run the local server using VS Code from the `./built/login.html` file.  
 A page `http://127.0.0.1:5500/login.html` will be opened in a browser.
 
 Enter a valid email and password and click on the login button.  
