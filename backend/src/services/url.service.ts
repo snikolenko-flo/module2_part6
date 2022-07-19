@@ -1,8 +1,8 @@
-import { FRONT_URL } from '../data/constants.js';
+import { BASE_URL } from '../data/constants.js';
 
 export class UrlService {
   getUrlProperties(req) {
-    const url: URL = this.getUrl(req, FRONT_URL);
+    const url: URL = this.getUrl(req, BASE_URL);
     const path = url.pathname;
     const method = req.method;
 
@@ -17,7 +17,7 @@ export class UrlService {
   }
 
   getPageNumber(req) {
-    const url: URL = this.getUrl(req, FRONT_URL);
+    const url: URL = this.getUrl(req, BASE_URL);
     const page = url.searchParams.get('page');
     return parseInt(page);
   }
