@@ -6,17 +6,17 @@
   "scripts": {
     "lint": "eslint . --ext .ts",
     "lint-fix": "eslint . --fix --ext .ts",
-    "build:backend": "npx tsc -p back/tsconfig.json",
-    "build:frontend": "npx tsc -p front/tsconfig.json",
-    "mv:backend": "mv ./back/backend ./built",
-    "mv:frontend": "mv front/frontend ./built",
-    "cp:frontend": "cp -a front/src/html/. ./built && cp -a front/src/css ./built/frontend",
-    "cp:backend": "cp -a back/src/images ./built/backend/src",
-    "build": "mkdir ./built && run-s build:backend build:frontend mv:backend mv:frontend cp:backend cp:frontend",
-    "prettier_write": " npx prettier --write .",
-    "prettier_check": "npx prettier --check .",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./built/backend/app.js",
-    "watch": "npx tsc --watch"
+    "build:backend": "tsc -p backend/tsconfig.json",
+    "build:frontend": "tsc -p frontend/tsconfig.json",
+    "mv:backend": "mv ./backend/backend ./built",
+    "mv:frontend": "mv ./frontend/frontend ./built",
+    "cp:frontend": "cp -a ./frontend/src/html ./built/frontend && cp -a ./frontend/src/css ./built/frontend",
+    "cp:backend": "cp -a ./backend/src/images ./built/backend",
+    "build": "rm -rf ./built && mkdir ./built && run-s build:frontend mv:frontend build:backend mv:backend cp:backend cp:frontend",
+    "prettier_write": "tsc prettier --write .",
+    "prettier_check": "tsc prettier --check .",
+    "node": "nodemon ./built/backend/app.js",
+    "start": "npm run build && npm run node",
+    "watch": "tsc --watch"
   }
 }

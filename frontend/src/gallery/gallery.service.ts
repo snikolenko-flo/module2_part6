@@ -1,4 +1,4 @@
-import { FRONT_BASE_URL } from '../data/constants.js';
+import { BASE_URL } from '../data/constants.js';
 
 export class GalleryService {
   wrapUrlsInHtml(urlsList: URL[]): string {
@@ -6,7 +6,7 @@ export class GalleryService {
 
     urlsList.forEach(function (url) {
       images += `<div class="gallery">
-                           <img src="${FRONT_BASE_URL}/${url}">
+                           <img src="${BASE_URL}/${url}">
                        </div>`;
     });
 
