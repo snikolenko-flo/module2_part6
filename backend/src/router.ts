@@ -12,16 +12,19 @@ export class Router {
     js: string;
     css: string;
     html: string;
+    img: string;
   };
 
   constructor() {
     this.url = new UrlService();
     this.galleryPage = './built/frontend/html/gallery.html';
     this.loginPage = './built/frontend/html/login.html';
+
     this.contentType = {
       js: 'application/javascript',
       css: 'text/css',
       html: 'text/html',
+      img: 'image/jpeg',
     };
   }
 
@@ -36,6 +39,11 @@ export class Router {
   async backend(req, res) {
     const { path } = this.url.getUrlProperties(req);
     await sendFile(req, res, `./built${decodeURI(path)}`, this.contentType.js);
+  }
+
+  async images(req, res) {
+    const { path } = this.url.getUrlProperties(req);
+    await sendFile(req, res, `./built${decodeURI(path)}`, this.contentType.img);
   }
 
   async gallery(req, res) {
