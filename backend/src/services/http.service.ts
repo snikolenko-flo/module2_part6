@@ -13,8 +13,8 @@ export function getPath(req) {
   if (path === '/' || path === '/login') return '/login';
   if (path === '/gallery' || path === '/gallery.html') return '/gallery';
   if (path.startsWith('/frontend')) return '/frontend';
-  if (path.startsWith('/backend')) return '/backend';
   if (path.startsWith('/backend/images')) return '/images';
+  if (path.startsWith('/backend')) return '/backend';
 
   return path;
 }

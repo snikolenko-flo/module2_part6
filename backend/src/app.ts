@@ -19,7 +19,7 @@ const server = http.createServer((req, res) => {
     if (path === '/gallery') await router.gallery(req, res);
     if (path === '/frontend') await router.frontend(req, res);
     if (path === '/backend') await router.backend(req, res);
-    if (path === '/images') await router.backend(req, res);
+    if (path === '/images') await router.images(req, res);
   })();
 });
 
