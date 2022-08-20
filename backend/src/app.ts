@@ -1,28 +1,20 @@
-import * as http from 'http';
 import { HOST, PORT } from './data/constants.js';
-import { HeaderService } from './services/header.service.js';
-import { Router } from './router.js';
-import { getPath } from './services/http.service.js';
+import express from 'express';
+import { loginRouter } from './login/router.js';
+import { galleryRouter } from './gallery/router.js';
+import { galleryHtmlRouter } from './gallery/gallery.html.router.js';
 
 const hostname = HOST;
 const port = PORT;
 
-const header = new HeaderService();
-const router = new Router();
+const app = express();
 
-const server = http.createServer((req, res) => {
-  (async () => {
-    header.setHeaders(res);
-    const path = getPath(req);
+app.use(express.static('built'));
+app.use('/', loginRouter);
+app.use('/login', loginRouter);
+app.use('/gallery.html', galleryHtmlRouter);
+app.use('/gallery', galleryRouter);
 
-    if (path === '/login') await router.login(req, res);
-    if (path === '/gallery') await router.gallery(req, res);
-    if (path === '/frontend') await router.frontend(req, res);
-    if (path === '/backend') await router.backend(req, res);
-    if (path === '/images') await router.images(req, res);
-  })();
-});
-
-server.listen(port, hostname, () => {
+app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });

@@ -31,5 +31,8 @@
   "bugs": {
     "url": "https://github.com/snikolenko-flo/module2_part1_gallery/issues"
   },
-  "homepage": "https://github.com/snikolenko-flo/module2_part1_gallery#readme"
+  "homepage": "https://github.com/snikolenko-flo/module2_part1_gallery#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
 }
