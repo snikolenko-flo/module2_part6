@@ -36,6 +36,8 @@ app.post('/upload', upload.single('img'), (req, res) => {
     res.send({error: 'Upload a file please'});
     res.end();
   }
+  res.status(200);
+  res.end();
 });
 
 app.listen(port, hostname, () => {
