@@ -7,6 +7,11 @@
   </head>
   <body>
     <ul id="pages"></ul>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+      <label for="img">Select image:</label>
+      <input type="file" id="img" name="img" accept="image/*" required>
+      <input type="submit">
+    </form>
     <div id="images"></div>
     <script type="module" src='frontend/gallery/gallery.js'></script>
   </body>
