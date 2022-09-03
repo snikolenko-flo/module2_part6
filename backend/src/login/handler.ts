@@ -8,8 +8,10 @@ export async function login(req, res) {
   const user = manager.user.findUser(email);
 
   if (!user) return manager.error.sendLoginError(res);
+  log.info('The user exists.');
+
   if (user.password !== password) return manager.error.sendLoginError(res);
+  log.info('The user email and password are valid.');
 
   manager.response.sendToken(req, res);
-  log.info('User is logged in.');
 }

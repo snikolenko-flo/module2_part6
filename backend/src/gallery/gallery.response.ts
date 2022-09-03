@@ -1,3 +1,5 @@
+import { log } from '../logger.js';
+
 export class GalleryResponse {
   sendImages(res, total: number, paths: string[]) {
     res.statusCode = 200;
@@ -7,5 +9,6 @@ export class GalleryResponse {
         objects: paths,
       }),
     );
+    log.info('Images were sent to the frontend.');
   }
 }

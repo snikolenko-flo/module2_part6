@@ -14,8 +14,8 @@ export async function getGallery(req, res) {
 
   const total = await manager.file.getTotalPages(IMAGES_DIR);
   if (pageNumber > total || pageNumber <= 0) return manager.error.sendWrongPageError(res, total);
+  log.info(`The page number ${pageNumber} is ok.`);
 
   const imagesPaths = await manager.file.getImages(pageNumber);
   manager.response.sendImages(res, total, imagesPaths);
-  log.info(`Gallery is open at the page ${pageNumber}`);
 }
