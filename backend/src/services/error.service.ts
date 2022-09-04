@@ -1,4 +1,4 @@
-import { log } from '../logger.js';
+import { log } from './logger.service.js';
 
 export class ErrorService {
   sendAuthError(res) {

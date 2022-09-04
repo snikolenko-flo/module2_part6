@@ -1,5 +1,5 @@
 import { ErrorService } from './error.service.js';
-import { log } from '../logger.js';
+import { log } from './logger.service.js';
 
 const error = new ErrorService();
 

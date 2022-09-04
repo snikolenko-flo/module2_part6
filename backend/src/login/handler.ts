@@ -1,5 +1,5 @@
 import { LoginManager } from './login.manager.js';
-import { log } from '../logger.js';
+import { log } from '../services/logger.service.js';
 
 const manager = new LoginManager();
 

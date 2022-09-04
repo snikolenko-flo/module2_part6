@@ -1,4 +1,4 @@
-import { log } from '../logger.js';
+import { log } from '../services/logger.service.js';
 
 export class GalleryError {
   sendIsNanError(res) {

@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { log } from '../logger.js';
+import { log } from './logger.service.js';
 
 export async function sendFile(req, res, path, contentType) {
   fs.readFile(path, function (err, data) {

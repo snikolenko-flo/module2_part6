@@ -1,4 +1,4 @@
-import { log } from '../logger.js';
+import { log } from '../services/logger.service.js';
 
 export class GalleryResponse {
   sendImages(res, total: number, paths: string[]) {

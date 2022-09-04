@@ -1,4 +1,4 @@
-import { log } from '../logger.js';
+import { log } from '../services/logger.service.js';
 
 export class LoginResponse {
   sendToken(req, res) {
