@@ -1,5 +1,5 @@
 import { getGallery } from './handler.js';
-import express from 'express';
+import express, { Request, Response } from 'express';
 import { log } from '../services/logger.service.js';
 import { sendFile } from '../services/file.service.js';
 import { upload } from '../services/upload.service.js';
@@ -10,7 +10,7 @@ galleryRouter.get('/', async(req, res) => {
   await getGallery(req, res);
 });
 
-galleryRouter.post('/', upload.any('img'), async(req, res) => {
+galleryRouter.post('/', upload.any('img'), async(req: Request, res: Response): Promise<void> => {
   log.info(`Request "${req.originalUrl}" is got.`);
   const file = req.file;
   if (!file) {

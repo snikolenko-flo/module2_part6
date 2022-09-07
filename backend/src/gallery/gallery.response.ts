@@ -1,7 +1,8 @@
 import { log } from '../services/logger.service.js';
+import { Response } from 'express';
 
 export class GalleryResponse {
-  sendImages(res, total: number, paths: string[]) {
+  sendImages(res: Response, total: number, paths: string[]) {
     res.statusCode = 200;
     res.end(
       JSON.stringify({

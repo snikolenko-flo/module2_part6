@@ -1,7 +1,8 @@
 import { log } from '../services/logger.service.js';
+import { Response } from 'express';
 
 export class LoginError {
-  sendLoginError(res) {
+  sendLoginError(res: Response) {
     log.error('Email or password are invalid.');
     res.statusCode = 401;
     res.end(JSON.stringify({ errorMessage: 'Email or password are invalid.' }));

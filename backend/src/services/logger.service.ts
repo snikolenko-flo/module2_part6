@@ -1,4 +1,4 @@
-import {mkdir, writeFile} from 'node:fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
 import * as fs from 'fs';
 import * as os from 'node:os';
 
@@ -23,7 +23,7 @@ export class LoggerService {
     this.openToAppend = {flag: 'a+'};
   }
 
-  async writeLog(level, message) {
+  async writeLog(level: string, message: string) {
     const content = this.formatLogContent(level, message);
 
     if (!this.directoryExists(this.directory)) {
@@ -54,39 +54,39 @@ export class LoggerService {
     return dif > this.logInterval;
   }
 
-  async createLogFile(file, content) {
+  async createLogFile(file: string, content: string) {
     await writeFile(file, content, this.openToAppend);
   }
 
-  fileExists(filePath) {
+  fileExists(filePath: string): boolean {
     return fs.existsSync(filePath);
   }
 
-  directoryExists(directory) {
+  directoryExists(directory: string) {
     return fs.existsSync(directory);
   }
 
-  async createDirectory(dirName) {
+  async createDirectory(dirName: string) {
     this.directory = await mkdir(dirName, {recursive: true});
   }
 
-  formatLogContent(level, message) {
+  formatLogContent(level: string, message: string) {
     return level + ': ' + message + os.EOL;
   }
 
-  fatal(message) {
+  fatal(message: string) {
     this.writeLog('fatal', message);
   }
 
-  error(message) {
+  error(message: string) {
     this.writeLog('error', message);
   }
 
-  warn(message) {
+  warn(message: string) {
     this.writeLog('warn', message);
   }
 
-  info(message) {
+  info(message: string) {
     this.writeLog('info', message);
   }
 

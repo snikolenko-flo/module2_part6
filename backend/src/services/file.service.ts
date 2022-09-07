@@ -1,7 +1,8 @@
 import fs from 'fs';
 import { log } from './logger.service.js';
+import { Request, Response } from 'express';
 
-export async function sendFile(req, res, path, contentType) {
+export async function sendFile(req: Request, res: Response, path: string, contentType: string): Promise<void> {
   fs.readFile(path, function (err, data) {
     if (err) {
       log.error('Requested file was not found.');

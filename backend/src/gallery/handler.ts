@@ -2,11 +2,12 @@ import { IMAGES_DIR } from '../data/constants.js';
 import { GalleryManager } from './gallery.manager.js';
 import { UrlService } from '../services/url.service.js';
 import { log } from '../services/logger.service.js';
+import { Request, Response } from 'express';
 
 const manager = new GalleryManager();
 const urlService = new UrlService();
 
-export async function getGallery(req, res) {
+export async function getGallery(req: Request, res: Response) {
 
   const pageNumber = urlService.getPageNumber(req);
   if (isNaN(pageNumber)) return manager.error.sendIsNanError(res);

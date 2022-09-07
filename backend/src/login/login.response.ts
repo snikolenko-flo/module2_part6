@@ -1,7 +1,8 @@
 import { log } from '../services/logger.service.js';
+import { Request, Response } from 'express';
 
 export class LoginResponse {
-  sendToken(req, res) {
+  sendToken(req: Request, res: Response) {
     req.on('end', () => {
       res.statusCode = 200;
       res.end(JSON.stringify({ token: 'token' }));

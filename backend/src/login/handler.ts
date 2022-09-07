@@ -1,9 +1,10 @@
 import { LoginManager } from './login.manager.js';
 import { log } from '../services/logger.service.js';
+import { Request, Response } from 'express';
 
 const manager = new LoginManager();
 
-export async function login(req, res) {
+export async function login(req: Request, res: Response) {
   const { email, password } = await manager.user.getBody(req);
   const user = manager.user.findUser(email);
 
