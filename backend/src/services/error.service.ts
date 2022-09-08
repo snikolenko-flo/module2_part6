@@ -1,4 +1,4 @@
-import { log } from './logger.service.js';
+import { log } from '../helper/logger.js';
 import { Response } from 'express';
 
 export class ErrorService {

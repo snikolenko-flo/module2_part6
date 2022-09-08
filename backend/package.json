@@ -13,11 +13,11 @@
   "description": "",
   "version": "1.0.0",
   "scripts": {
-    "lint": "eslint  --ext .ts",
-    "lint-fix": "eslint  --fix --ext .ts",
+    "lint": "eslint --ext .ts",
+    "lint-fix": "eslint --fix --ext .ts",
     "build": "npx tsc",
-    "prettier_write": " npx prettier --write ",
-    "prettier_check": "npx prettier --check ",
+    "prettier_write": " npx prettier-write .",
+    "prettier_check": "npx prettier-check .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon ./built/backend/app.js",
     "watch": "npx tsc --watch"
@@ -33,6 +33,7 @@
   },
   "homepage": "https://github.com/snikolenko-flo/module2_part1_gallery#readme",
   "dependencies": {
+    "dotenv": "^16.0.2",
     "express": "^4.18.1"
   }
 }

@@ -14,14 +14,15 @@
     "cp:backend": "cp -a ./backend/src/images ./built/backend",
     "cp:favicons": "cp -a ./backend/src/favicons ./built/backend",
     "build": "rm -rf ./built && mkdir ./built && run-s build:frontend mv:frontend build:backend mv:backend cp:backend cp:favicons cp:frontend",
-    "prettier_write": "tsc prettier --write .",
-    "prettier_check": "tsc prettier --check .",
+    "prettier_write": "tsc prettier-write .",
+    "prettier_check": "tsc prettier-check .",
     "node": "nodemon ./built/backend/app.js",
     "start": "npm run build && npm run node",
     "watch": "tsc --watch"
   },
   "dependencies": {
     "@types/node": "^18.6.5",
+    "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "multer": "^1.4.5-lts.1",
     "npm-run-all": "^4.1.5"

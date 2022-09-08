@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { sendFile } from '../services/file.service.js';
-import { log } from '../services/logger.service.js';
+import { log } from '../helper/logger.js';
 
 export const galleryHtmlRouter = express.Router();
 galleryHtmlRouter.get('/', async (req: Request, res: Response) => {

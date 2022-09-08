@@ -1,7 +1,7 @@
 import { IMAGES_DIR } from '../data/constants.js';
 import { GalleryManager } from './gallery.manager.js';
 import { UrlService } from '../services/url.service.js';
-import { log } from '../services/logger.service.js';
+import { log } from '../helper/logger.js';
 import { Request, Response } from 'express';
 
 const manager = new GalleryManager();

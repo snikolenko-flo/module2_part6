@@ -1,5 +1,5 @@
 import { ErrorService } from './error.service.js';
-import { log } from './logger.service.js';
+import { log } from '../helper/logger.js';
 import { Request, Response } from 'express';
 
 const error = new ErrorService();

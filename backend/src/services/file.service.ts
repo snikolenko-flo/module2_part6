@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { log } from './logger.service.js';
+import { log } from '../helper/logger.js';
 import { Request, Response } from 'express';
 
 export async function sendFile(req: Request, res: Response, path: string, contentType: string): Promise<void> {

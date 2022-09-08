@@ -1,28 +1,9 @@
-import { mkdir, writeFile } from 'node:fs/promises';
-import * as fs from 'fs';
-import * as os from 'node:os';
+import {mkdir, writeFile} from 'node:fs/promises';
+import fs from 'fs';
+import os from 'node:os';
+import { Logger } from './abstract.logger.js';
 
-export class LoggerService {
-  fileCreated: Date;
-  fileName: string;
-  filePath: string;
-  directory: string;
-  logInterval: number;
-  minutes: number;
-  oneMinuteInMs: number;
-  openToAppend: object;
-
-  constructor() {
-    this.fileCreated = new Date();
-    this.directory = 'logs';
-    this.fileName = `logs_${this.fileCreated}.txt`;
-    this.filePath = `./${this.directory}/${this.fileName}`;
-    this.minutes = 1;
-    this.oneMinuteInMs = 60000;
-    this.logInterval = this.oneMinuteInMs * this.minutes;
-    this.openToAppend = {flag: 'a+'};
-  }
-
+export class FileLogger extends Logger {
   async writeLog(level: string, message: string) {
     const content = this.formatLogContent(level, message);
 
@@ -98,5 +79,3 @@ export class LoggerService {
     this.writeLog('trace', message);
   }
 }
-
-export const log = new LoggerService();
