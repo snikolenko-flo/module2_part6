@@ -1,8 +1,9 @@
 import { User } from '../interfaces/user.js';
 import { users } from '../users/users.js';
+import { Request } from 'express';
 
 export class LoginUser {
-  async getBody(req): Promise<User> {
+  async getBody(req: Request): Promise<User> {
     let body = '';
     await req.on('data', (chunk) => {
       body += chunk.toString();

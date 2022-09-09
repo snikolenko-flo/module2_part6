@@ -1,10 +1,13 @@
 import { ErrorService } from './error.service.js';
+import { log } from '../helper/logger.js';
+import { Request, Response } from 'express';
 
 const error = new ErrorService();
 
-export class AuthService {
-  async checkAuthorization(req, res) {
-    if (!req.headers.authorization) return error.sendAuthError(res);
-    if (req.headers.authorization !== 'token') return error.sendWrongTokenError(res);
-  }
+export function checkAuthorization(req: Request, res: Response, next) {
+  log.info('Check if the user is authorized.');
+  if (!req.headers.authorization) return error.sendAuthError(res);
+  if (req.headers.authorization !== 'token') return error.sendWrongTokenError(res);
+  log.info('The user is authorized.');
+  next();
 }

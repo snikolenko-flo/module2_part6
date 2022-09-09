@@ -35,6 +35,14 @@ Frontend part.
 - login - module that is responsible for validating user input and login
 - services - contains additional services
 
+# Set up
+
+Create .env file in the root of the project.  
+Add info about stage to the file. 
+
+If you set STAGE="local" all logs will be written to log files.  
+If you set any other value, e.g. STAGE="dev", logs will be displayed in the console.
+
 # Launching
 
 Run the command `npm run start` from the project root directory to build and start the app.  
