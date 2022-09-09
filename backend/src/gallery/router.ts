@@ -1,8 +1,10 @@
 import { getGallery } from './handler.js';
 import express, { Request, Response } from 'express';
 import { log } from '../helper/logger.js';
-import { sendFile } from '../services/file.service.js';
+import { FileService } from '../services/file.service.js';
 import { upload } from '../services/upload.service.js';
+
+const fileService = new FileService();
 
 export const galleryRouter = express.Router();
 galleryRouter.get('/', async(req, res) => {
@@ -20,6 +22,6 @@ galleryRouter.post('/', upload.any('img'), async(req: Request, res: Response): P
     log.error('File was not provided.');
     return;
   }
-  await sendFile(req, res, './built/frontend/html/gallery.html', 'text/html');
+  await fileService.sendFile(req, res, './built/frontend/html/gallery.html', 'text/html');
   log.info('A new image was uploaded to the server.');
 });
