@@ -1,5 +1,6 @@
 import { PER_PAGE, IMAGES_DIR } from '../data/constants.js';
 import { opendir, stat } from 'node:fs/promises';
+import { images } from '../services/db-service.js';
 
 export class GalleryFile {
   async getFilesAmount(directory: string, counter?: number): Promise<number> {
@@ -72,4 +73,31 @@ export class GalleryFile {
     const images = await this.getAllFiles(IMAGES_DIR);
     return await this.getImagesPerPage(images, page, PER_PAGE);
   }
+
+  async addImagesToDB(directory: string): Promise<void> {
+    const dir = await opendir(directory);
+
+    for await (const file of dir) {
+      if (file.name.startsWith('.')) continue;
+
+      const filePath = directory + '/' + file.name;
+      const isDir = await this.isDirectory(filePath);
+
+      if (isDir) {
+        await this.addImagesToDB(filePath);
+      } else {
+        const fileStat = await stat(filePath);
+
+        const isImage = await images.findOne({ path: filePath }).exec();
+        if (isImage!==null) return;
+
+        const image = new images({
+          path: filePath,
+          metadata: fileStat,
+        });
+        image.save().then(() => console.log(`The image ${filePath} was saved`));
+      }
+    }
+  }
+
 }

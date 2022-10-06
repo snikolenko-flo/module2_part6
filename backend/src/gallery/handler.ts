@@ -3,7 +3,6 @@ import { GalleryManager } from './gallery.manager.js';
 import { UrlService } from '../services/url.service.js';
 import { log } from '../helper/logger.js';
 import { Request, Response } from 'express';
-
 const manager = new GalleryManager();
 const urlService = new UrlService();
 
@@ -18,5 +17,6 @@ export async function getGallery(req: Request, res: Response) {
   log.info(`The page number ${pageNumber} is ok.`);
 
   const imagesPaths = await manager.file.getImages(pageNumber);
+  await manager.file.addImagesToDB(IMAGES_DIR);
   manager.response.sendImages(res, total, imagesPaths);
 }
