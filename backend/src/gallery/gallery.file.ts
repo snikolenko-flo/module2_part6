@@ -1,6 +1,6 @@
-import { PER_PAGE, IMAGES_DIR } from '../data/constants.js';
-import { opendir, stat } from 'node:fs/promises';
-import { images } from '../services/db-service.js';
+import {IMAGES_DIR, PER_PAGE} from '../data/constants.js';
+import {opendir, stat} from 'node:fs/promises';
+import {images} from '../services/db-service.js';
 
 export class GalleryFile {
   async getFilesAmount(directory: string, counter?: number): Promise<number> {
@@ -70,7 +70,7 @@ export class GalleryFile {
   }
 
   async getImages(page: number): Promise<string[]> {
-    const images = await this.getAllFiles(IMAGES_DIR);
+    const images = await this.getImagesFromDB();
     return await this.getImagesPerPage(images, page, PER_PAGE);
   }
 
@@ -80,6 +80,8 @@ export class GalleryFile {
     for await (const file of dir) {
       if (file.name.startsWith('.')) continue;
 
+      const directoryWithoutBuiltFolder = directory.split('/').slice(2).join('/');
+
       const filePath = directory + '/' + file.name;
       const isDir = await this.isDirectory(filePath);
 
@@ -88,16 +90,20 @@ export class GalleryFile {
       } else {
         const fileStat = await stat(filePath);
 
-        const isImage = await images.findOne({ path: filePath }).exec();
+        const pathWithoutBuiltFolder = directoryWithoutBuiltFolder + '/' + file.name;
+        const isImage = await images.findOne({ path: pathWithoutBuiltFolder }).exec();
         if (isImage!==null) return;
 
         const image = new images({
-          path: filePath,
+          path: pathWithoutBuiltFolder,
           metadata: fileStat,
         });
         image.save().then(() => console.log(`The image ${filePath} was saved`));
       }
     }
   }
-
+  async getImagesFromDB() {
+    const bdImages = await images.find({}, {_id: 0, metadata: 0, __v: 0});
+    return bdImages.map((item) => item.path);
+  }
 }

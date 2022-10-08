@@ -16,7 +16,7 @@ export async function getGallery(req: Request, res: Response) {
   if (pageNumber > total || pageNumber <= 0) return manager.error.sendWrongPageError(res, total);
   log.info(`The page number ${pageNumber} is ok.`);
 
-  const imagesPaths = await manager.file.getImages(pageNumber);
   await manager.file.addImagesToDB(IMAGES_DIR);
+  const imagesPaths = await manager.file.getImages(pageNumber);
   manager.response.sendImages(res, total, imagesPaths);
 }
