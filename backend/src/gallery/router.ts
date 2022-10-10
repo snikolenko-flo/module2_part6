@@ -3,6 +3,7 @@ import express, { Request, Response } from 'express';
 import { log } from '../helper/logger.js';
 import { FileService } from '../services/file.service.js';
 import { upload } from '../services/upload.service.js';
+import { uploadImageDataToDB } from '../services/db-service.js';
 
 const fileService = new FileService();
 
@@ -22,6 +23,7 @@ galleryRouter.post('/', upload.any('img'), async(req: Request, res: Response): P
     log.error('File was not provided.');
     return;
   }
+  await uploadImageDataToDB(req);
   await fileService.sendFile(req, res, './built/frontend/html/gallery.html', 'text/html');
   log.info('A new image was uploaded to the server.');
 });
