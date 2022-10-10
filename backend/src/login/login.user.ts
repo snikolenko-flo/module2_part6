@@ -1,6 +1,6 @@
-import { User } from '../interfaces/user.js';
-import { users } from '../users/users.js';
-import { Request } from 'express';
+import {User} from '../interfaces/user.js';
+import {Request} from 'express';
+import {findUserInDB} from '../services/db-service.js';
 
 export class LoginUser {
   async getBody(req: Request): Promise<User> {
@@ -11,7 +11,11 @@ export class LoginUser {
     return JSON.parse(body);
   }
 
-  findUser(email: string) {
-    return users.find((user) => user.email == email);
+  async findUser(email: string) {
+    const user = await findUserInDB(email);
+    console.log('db user');
+    console.log(user);
+    return user;
+    //return users.find((user) => user.email == email);
   }
 }

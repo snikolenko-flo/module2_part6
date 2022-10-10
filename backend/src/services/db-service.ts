@@ -1,5 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import { stat } from 'node:fs/promises';
+import { new_users } from '../users/users.js';
 
 const ImagesSchema: Schema = new Schema({
   path: {type: String, required: true, unique: true},
@@ -23,6 +24,11 @@ export async function uploadImageDataToDB(req) {
     metadata: fileStat,
   });
   image.save().then(() => console.log(`The image ${filePath} was saved`));
+}
+
+export async function findUserInDB(email) {
+  const user = await new_users.findOne({email: email}, {_id: 0, __v: 0} ).exec();
+  return user;
 }
 
 export const images = mongoose.model('Image', ImagesSchema);
