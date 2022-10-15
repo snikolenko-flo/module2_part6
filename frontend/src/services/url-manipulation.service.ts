@@ -23,4 +23,29 @@ export class UrlManipulationService {
 
     return pageNumber;
   }
+
+  getPageLimitFromUrl(): number {
+    const currentUrl: string = window.location.search;
+
+    const searchParams: URLSearchParams = new URLSearchParams(currentUrl);
+
+    const limit: string = searchParams.get('limit');
+    const defaultLimit = 50;
+
+    if (!limit) {
+      return defaultLimit;
+    }
+
+    const pageLimit: number = parseInt(limit);
+
+    if (isNaN(pageLimit)) {
+      throw Error('The page number should be an integer');
+    }
+
+    if (!isFinite(pageLimit)) {
+      throw Error('The page number should be a finite integer');
+    }
+
+    return pageLimit;
+  }
 }

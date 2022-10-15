@@ -10,7 +10,8 @@ const galleryService = new GalleryService();
 export class LoginService {
   redirectToGallery(): void {
     const pageNumber: number = urlService.getPageNumberFromUrl();
-    galleryService.redirectToPage(pageNumber);
+    const pageLimit: number = urlService.getPageLimitFromUrl();
+    galleryService.redirectToPage(pageNumber, pageLimit);
   }
 
   handleEmailValidation(validatedEmail: ValidationResult, emailError: HTMLFormElement): void {

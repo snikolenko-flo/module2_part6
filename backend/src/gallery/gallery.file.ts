@@ -43,6 +43,19 @@ export class GalleryFile {
     return Math.trunc(filesAmount / PER_PAGE) + onePage;
   }
 
+  async getPagesAmount(dir: string, limit: number): Promise<number> {
+
+    const filesAmount = limit;
+
+    const onePage = 1;
+    if (filesAmount <= PER_PAGE) return onePage;
+
+    const remainder = filesAmount % PER_PAGE;
+    if (remainder === 0) return filesAmount / PER_PAGE;
+
+    return Math.trunc(filesAmount / PER_PAGE) + onePage;
+  }
+
   async getAllFiles(directory: string, files?: string[]): Promise<string[]> {
     const dir = await opendir(directory);
 
@@ -69,8 +82,8 @@ export class GalleryFile {
     return images.slice(start, endIndex);
   }
 
-  async getImages(page: number): Promise<string[]> {
-    const images = await this.getImagesFromDB();
+  async getImages(page: number, limit: number): Promise<string[]> {
+    const images = await this.getImagesFromDB(limit);
     return await this.getImagesPerPage(images, page, PER_PAGE);
   }
 
@@ -102,8 +115,8 @@ export class GalleryFile {
       }
     }
   }
-  async getImagesFromDB() {
-    const bdImages = await images.find({}, {_id: 0, metadata: 0, __v: 0});
+  async getImagesFromDB(limit: number) {
+    const bdImages = await images.find({}, {_id: 0, metadata: 0, __v: 0}).limit(limit);
     return bdImages.map((item) => item.path);
   }
 }

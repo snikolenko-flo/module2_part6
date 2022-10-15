@@ -8,11 +8,12 @@ const manager = new GalleryManager();
 export async function loadGallery(): Promise<void> {
   try {
     const pageNumber: number = urlService.getPageNumberFromUrl();
-    const images = await manager.api.fetchImages(pageNumber);
+    const pageLimit: number = urlService.getPageLimitFromUrl();
+    const images = await manager.api.fetchImages(pageNumber, pageLimit);
 
     manager.render.renderPagesList(images.total);
     manager.render.renderImages(images.objects);
-    manager.url.addPageToUrl(pageNumber);
+    manager.url.addParametersToUrl(pageNumber, pageLimit);
   } catch (e) {
     if (!(e instanceof TypeError)) alert(e);
   }
@@ -25,10 +26,12 @@ export async function fetchGallery(event: Event): Promise<void> {
   const clickedPageNumber = manager.url.getClickedPageNumber(pageNumber);
   if (!clickedPageNumber) return;
 
+  const pageLimit: number = urlService.getPageLimitFromUrl();
+
   try {
-    const images = await manager.api.fetchImages(clickedPageNumber);
+    const images = await manager.api.fetchImages(clickedPageNumber, pageLimit);
     manager.render.renderImages(images.objects);
-    manager.url.addPageToUrl(clickedPageNumber);
+    manager.url.addParametersToUrl(pageNumber, pageLimit);
   } catch (e) {
     alert(e);
   }

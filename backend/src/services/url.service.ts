@@ -11,4 +11,10 @@ export class UrlService {
     const page = url.searchParams.get('page');
     return parseInt(page);
   }
+
+  getPageLimit(req: Request): number {
+    const url: URL = this.getUrl(req, BASE_URL);
+    const limit = url.searchParams.get('limit');
+    return parseInt(limit);
+  }
 }
