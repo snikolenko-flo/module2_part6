@@ -10,7 +10,7 @@ export async function getGallery(req: Request, res: Response) {
 
   const pageNumber = urlService.getPageNumber(req);
   const pageLimit = urlService.getPageLimit(req);
-  console.log(`pageLimit: ${pageLimit}`);
+
   if (!pageLimit) console.log(`pageLimit: ${pageLimit}, default pageLimit: ${DEFAULT_LIMIT}`);
 
   if (isNaN(pageNumber)) return manager.error.sendIsNanError(res);

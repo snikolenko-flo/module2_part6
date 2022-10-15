@@ -1,6 +1,6 @@
 import {IMAGES_DIR, PER_PAGE} from '../data/constants.js';
 import {opendir, stat} from 'node:fs/promises';
-import {images} from '../services/db-service.js';
+import { images } from '../models/image.model.js';
 
 export class GalleryFile {
   async getFilesAmount(directory: string, counter?: number): Promise<number> {

@@ -4,6 +4,8 @@ import { loginRouter } from './login/router.js';
 import { galleryRouter } from './gallery/router.js';
 import { galleryHtmlRouter } from './gallery/gallery.html.router.js';
 import { checkAuthorization } from './services/auth.service.js';
+import { addDefaultUsersToDB } from './services/db-service.js';
+import mongoose from 'mongoose';
 
 const hostname = HOST;
 const port = PORT;
@@ -21,3 +23,6 @@ app.use('/upload', checkAuthorization, galleryRouter);
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
+
+mongoose.connect('mongodb://localhost:27017/test').then(() => console.log('Database is connected!'));
+addDefaultUsersToDB().then(() => console.log('Default users have been added to DB.'));
