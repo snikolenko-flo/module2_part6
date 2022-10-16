@@ -6,6 +6,7 @@
   "scripts": {
     "lint": "eslint . --ext .ts",
     "lint-fix": "eslint . --fix --ext .ts",
+    "start:mongodb": "brew services start mongodb-community@6.0",
     "build:backend": "tsc -p backend/tsconfig.json",
     "build:frontend": "tsc -p frontend/tsconfig.json",
     "mv:backend": "mv ./backend/backend ./built",
@@ -17,7 +18,7 @@
     "prettier_write": "tsc prettier-write .",
     "prettier_check": "tsc prettier-check .",
     "node": "nodemon ./built/backend/app.js",
-    "start": "npm run build && npm run node",
+    "start": "npm run start:mongodb && npm run build && npm run node",
     "watch": "tsc --watch"
   },
   "dependencies": {
