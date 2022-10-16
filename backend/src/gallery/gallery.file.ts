@@ -1,5 +1,5 @@
-import {IMAGES_DIR, PER_PAGE} from '../data/constants.js';
-import {opendir, stat} from 'node:fs/promises';
+import { PER_PAGE } from '../data/constants.js';
+import { opendir, stat } from 'node:fs/promises';
 import { images } from '../models/image.model.js';
 
 export class GalleryFile {

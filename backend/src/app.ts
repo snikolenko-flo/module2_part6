@@ -1,4 +1,5 @@
-import { HOST, PORT } from './data/constants.js';
+import * as dotenv from 'dotenv';
+dotenv.config();
 import express from 'express';
 import { loginRouter } from './login/router.js';
 import { galleryRouter } from './gallery/router.js';
@@ -7,13 +8,11 @@ import { checkAuthorization } from './services/auth.service.js';
 import { addDefaultUsersToDB } from './services/db-service.js';
 import mongoose from 'mongoose';
 
-const hostname = HOST;
-const port = PORT;
-
+const hostname = process.env.HOST;
+const port = process.env.PORT;
 const app = express();
 
 app.use(express.static('built'));
-
 app.use('/', loginRouter);
 app.use('/login', loginRouter);
 app.use('/gallery.html', galleryHtmlRouter);

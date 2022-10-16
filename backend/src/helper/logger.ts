@@ -1,5 +1,4 @@
 import { logger } from './factory.logger.js';
-import * as process from 'process';
 import * as dotenv from 'dotenv';
 dotenv.config();
 

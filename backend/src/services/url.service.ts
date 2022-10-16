@@ -1,5 +1,8 @@
-import { BASE_URL } from '../data/constants.js';
+import * as dotenv from 'dotenv';
+dotenv.config();
 import { Request } from 'express';
+
+const BASE_URL = process.env.BASE_URL;
 
 export class UrlService {
   getUrl(req: Request, base: string): URL {

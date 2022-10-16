@@ -1,10 +1,14 @@
-import { IMAGES_DIR, DEFAULT_LIMIT } from '../data/constants.js';
+import * as dotenv from 'dotenv';
+dotenv.config();
+import { DEFAULT_LIMIT } from '../data/constants.js';
 import { GalleryManager } from './gallery.manager.js';
 import { UrlService } from '../services/url.service.js';
 import { log } from '../helper/logger.js';
 import { Request, Response } from 'express';
+
 const manager = new GalleryManager();
 const urlService = new UrlService();
+const IMAGES_DIR = process.env.IMAGES_DIR;
 
 export async function getGallery(req: Request, res: Response) {
 
