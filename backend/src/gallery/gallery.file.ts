@@ -43,6 +43,18 @@ export class GalleryFile {
     return Math.trunc(filesAmount / PER_PAGE) + onePage;
   }
 
+  async getTotalPagesForLimit(dir: string, limit: number): Promise<number> {
+    const filesAmount = limit;
+
+    const onePage = 1;
+    if (filesAmount <= PER_PAGE) return onePage;
+
+    const remainder = filesAmount % PER_PAGE;
+    if (remainder === 0) return filesAmount / PER_PAGE;
+
+    return Math.trunc(filesAmount / PER_PAGE) + onePage;
+  }
+
   async getPagesAmount(dir: string, limit: number): Promise<number> {
 
     const filesAmount = limit;
@@ -115,6 +127,7 @@ export class GalleryFile {
       }
     }
   }
+
   async getImagesFromDB(limit: number) {
     const bdImages = await images.find({}, {_id: 0, metadata: 0, __v: 0}).limit(limit);
     return bdImages.map((item) => item.path);

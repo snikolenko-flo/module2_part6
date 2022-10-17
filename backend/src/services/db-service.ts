@@ -24,6 +24,11 @@ export async function findUserInDB(email) {
   return user;
 }
 
+export async function getImagesNumber() {
+  const imagesNumber = await images.count();
+  return imagesNumber;
+}
+
 export async function addDefaultUsersToDB() {
   const defaultUsersArray = [
     'asergeev@flo.team',

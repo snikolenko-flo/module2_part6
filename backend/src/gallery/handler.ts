@@ -1,6 +1,5 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
-import { DEFAULT_LIMIT } from '../data/constants.js';
 import { GalleryManager } from './gallery.manager.js';
 import { UrlService } from '../services/url.service.js';
 import { log } from '../helper/logger.js';
@@ -15,14 +14,16 @@ export async function getGallery(req: Request, res: Response) {
   const pageNumber = urlService.getPageNumber(req);
   const pageLimit = urlService.getPageLimit(req);
 
-  if (!pageLimit) console.log(`pageLimit: ${pageLimit}, default pageLimit: ${DEFAULT_LIMIT}`);
-
   if (isNaN(pageNumber)) return manager.error.sendIsNanError(res);
   if (!isFinite(pageNumber)) return manager.error.sendFiniteError(res);
 
   const total = await manager.file.getTotalPages(IMAGES_DIR);
+  const totalForLimit = await manager.file.getTotalPagesForLimit(IMAGES_DIR, pageLimit);
 
   if (pageNumber > total || pageNumber <= 0) return manager.error.sendWrongPageError(res, total);
+  log.info(`The page number ${pageNumber} is ok.`);
+
+  if (pageNumber > totalForLimit || pageNumber <= 0) return manager.error.sendWrongPageError(res, totalForLimit);
   log.info(`The page number ${pageNumber} is ok.`);
 
   let pagesAmount = await manager.file.getPagesAmount(IMAGES_DIR, pageLimit);

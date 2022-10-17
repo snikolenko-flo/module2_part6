@@ -8,9 +8,12 @@ const urlService = new UrlManipulationService();
 const galleryService = new GalleryService();
 
 export class LoginService {
-  redirectToGallery(): void {
+  async redirectToGallery(): Promise<void> {
     const pageNumber: number = urlService.getPageNumberFromUrl();
-    const pageLimit: number = urlService.getPageLimitFromUrl();
+    let pageLimit: number = urlService.getPageLimitFromUrl();
+    if(!pageLimit) {
+      pageLimit = await urlService.fetchLimit();
+    }
     galleryService.redirectToPage(pageNumber, pageLimit);
   }
 

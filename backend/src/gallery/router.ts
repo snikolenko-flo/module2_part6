@@ -4,13 +4,21 @@ import { log } from '../helper/logger.js';
 import { FileService } from '../services/file.service.js';
 import { upload } from '../services/upload.service.js';
 import { uploadImageDataToDB } from '../services/db-service.js';
+import { PageService } from '../services/page.service.js';
 
 const fileService = new FileService();
+const pageSevice = new PageService();
 
 export const galleryRouter = express.Router();
+
 galleryRouter.get('/', async(req, res) => {
   log.info(`Request "${req.originalUrl}" is got.`);
   await getGallery(req, res);
+});
+
+galleryRouter.get('/limit', async(req, res) => {
+  log.info(`Request "${req.originalUrl}" is got.`);
+  await pageSevice.getLimit(req, res);
 });
 
 galleryRouter.post('/', upload.any('img'), async(req: Request, res: Response): Promise<void> => {
