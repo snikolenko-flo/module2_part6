@@ -1,6 +1,9 @@
-import { stat } from 'node:fs/promises';
+import {opendir, stat} from 'node:fs/promises';
 import { users } from '../models/user.model.js';
 import { images } from '../models/image.model.js';
+import { GalleryFile } from '../gallery/gallery.file.js';
+
+const GalleryService = new GalleryFile();
 
 export async function uploadImageDataToDB(req) {
 
@@ -44,17 +47,47 @@ export async function addDefaultUsersToDB() {
     email: 'asergeev@flo.team',
     password: 'jgF5tn4F',
   });
-  asergeev.save().then(() => console.log('asergeev was saved'));
+  asergeev.save();
 
   const tpupkin = new users({
     email: 'tpupkin@flo.team',
     password: 'tpupkin@flo.team',
   });
-  tpupkin.save().then(() => console.log('tpupkin was saved'));
+  tpupkin.save();
 
   const vkotikov = new users({
     email: 'vkotikov@flo.team',
     password: 'po3FGas8',
   });
-  vkotikov.save().then(() => console.log('vkotikov was saved'));
+  vkotikov.save();
+}
+
+export async function addImagesToDB(directory: string): Promise<void> {
+  const dir = await opendir(directory);
+
+  for await (const file of dir) {
+    if (file.name.startsWith('.')) continue;
+
+    const directoryWithoutBuiltFolder = directory.split('/').slice(2).join('/');
+    const filePath = directory + '/' + file.name;
+
+    const isDir = await GalleryService.isDirectory(filePath);
+
+    if (isDir) {
+      await addImagesToDB(filePath);
+    } else {
+      const fileStat = await stat(filePath);
+
+      const pathWithoutBuiltFolder = directoryWithoutBuiltFolder + '/' + file.name;
+      const isImage = await images.findOne({ path: pathWithoutBuiltFolder }).exec();
+
+      if (isImage!==null) return;
+
+      const image = new images({
+        path: pathWithoutBuiltFolder,
+        metadata: fileStat,
+      });
+      image.save();
+    }
+  }
 }

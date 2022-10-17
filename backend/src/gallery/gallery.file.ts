@@ -99,35 +99,6 @@ export class GalleryFile {
     return await this.getImagesPerPage(images, page, PER_PAGE);
   }
 
-  async addImagesToDB(directory: string): Promise<void> {
-    const dir = await opendir(directory);
-
-    for await (const file of dir) {
-      if (file.name.startsWith('.')) continue;
-
-      const directoryWithoutBuiltFolder = directory.split('/').slice(2).join('/');
-
-      const filePath = directory + '/' + file.name;
-      const isDir = await this.isDirectory(filePath);
-
-      if (isDir) {
-        await this.addImagesToDB(filePath);
-      } else {
-        const fileStat = await stat(filePath);
-
-        const pathWithoutBuiltFolder = directoryWithoutBuiltFolder + '/' + file.name;
-        const isImage = await images.findOne({ path: pathWithoutBuiltFolder }).exec();
-        if (isImage!==null) return;
-
-        const image = new images({
-          path: pathWithoutBuiltFolder,
-          metadata: fileStat,
-        });
-        image.save().then(() => console.log(`The image ${filePath} was saved`));
-      }
-    }
-  }
-
   async getImagesFromDB(limit: number) {
     const bdImages = await images.find({}, {_id: 0, metadata: 0, __v: 0}).limit(limit);
     return bdImages.map((item) => item.path);

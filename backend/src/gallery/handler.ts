@@ -29,7 +29,6 @@ export async function getGallery(req: Request, res: Response) {
   let pagesAmount = await manager.file.getPagesAmount(IMAGES_DIR, pageLimit);
   if (pagesAmount > total) pagesAmount = total;
 
-  await manager.file.addImagesToDB(IMAGES_DIR);
   const imagesPaths = await manager.file.getImages(pageNumber, pageLimit);
   manager.response.sendImages(res, pagesAmount, imagesPaths);
 }
