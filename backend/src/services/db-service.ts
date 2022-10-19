@@ -1,11 +1,13 @@
-import {opendir, stat} from 'node:fs/promises';
+import { opendir, stat } from 'node:fs/promises';
 import { users } from '../models/user.model.js';
 import { images } from '../models/image.model.js';
 import { GalleryFile } from '../gallery/gallery.file.js';
+import { User } from '../interfaces/user.js';
+import { log } from '../helper/logger.js';
 
 const GalleryService = new GalleryFile();
 
-export async function uploadImageDataToDB(req) {
+export async function uploadImageDataToDB(req): Promise<void> {
 
   const filePath = req.files[0].path;
   const fileStat = await stat(filePath);
@@ -19,20 +21,20 @@ export async function uploadImageDataToDB(req) {
     path: pathWithoutBuiltFolder,
     metadata: fileStat,
   });
-  image.save().then(() => console.log(`The image ${filePath} was saved`));
+  image.save().then(() => log.info(`The image ${filePath} was saved`));
 }
 
-export async function findUserInDB(email) {
+export async function findUserInDB(email: string): Promise<User> {
   const user = await users.findOne({email: email}, {_id: 0, __v: 0} ).exec();
-  return user;
+  return user.toObject();
 }
 
-export async function getImagesNumber() {
+export async function getImagesNumber(): Promise<number> {
   const imagesNumber = await images.count();
   return imagesNumber;
 }
 
-export async function addDefaultUsersToDB() {
+export async function addDefaultUsersToDB(): Promise<void> {
   const defaultUsersArray = [
     'asergeev@flo.team',
     'tpupkin@flo.team',
@@ -47,19 +49,19 @@ export async function addDefaultUsersToDB() {
     email: 'asergeev@flo.team',
     password: 'jgF5tn4F',
   });
-  asergeev.save();
+  asergeev.save().then(() => log.info(`The user ${asergeev.email} was saved to DB.`));
 
   const tpupkin = new users({
     email: 'tpupkin@flo.team',
     password: 'tpupkin@flo.team',
   });
-  tpupkin.save();
+  tpupkin.save().then(() => log.info(`The user ${tpupkin.email} was saved to DB.`));
 
   const vkotikov = new users({
     email: 'vkotikov@flo.team',
     password: 'po3FGas8',
   });
-  vkotikov.save();
+  vkotikov.save().then(() => log.info(`The user ${vkotikov.email} was saved to DB.`));
 }
 
 export async function addImagesToDB(directory: string): Promise<void> {

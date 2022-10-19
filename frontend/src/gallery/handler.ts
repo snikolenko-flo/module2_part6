@@ -9,7 +9,6 @@ export async function loadGallery(): Promise<void> {
   try {
     const pageNumber: number = urlService.getPageNumberFromUrl();
     const pageLimit: number = await urlService.getLimit();
-
     const images = await manager.api.fetchImages(pageNumber, pageLimit);
 
     manager.render.renderPagesList(images.total);

@@ -44,7 +44,8 @@ Set the next variables in the file:
 - PORT=3000
 - IMAGES_DIR=./built/backend/images
 - BASE_URL=http://127.0.0.1:3000
-- STAGE=dev
+- STAGE=dev 
+- MONGO_URL=mongodb://localhost:27017/test
 
 If you set STAGE="local" all logs will be written to log files.  
 If you set any other value, e.g. STAGE="dev", logs will be displayed in the console.

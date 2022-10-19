@@ -7,7 +7,7 @@ import { uploadImageDataToDB } from '../services/db-service.js';
 import { PageService } from '../services/page.service.js';
 
 const fileService = new FileService();
-const pageSevice = new PageService();
+const pageService = new PageService();
 
 export const galleryRouter = express.Router();
 
@@ -18,7 +18,7 @@ galleryRouter.get('/', async(req, res) => {
 
 galleryRouter.get('/limit', async(req, res) => {
   log.info(`Request "${req.originalUrl}" is got.`);
-  await pageSevice.getLimit(req, res);
+  await pageService.getLimit(req, res);
 });
 
 galleryRouter.post('/', upload.any('img'), async(req: Request, res: Response): Promise<void> => {

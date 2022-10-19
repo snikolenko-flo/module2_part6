@@ -68,26 +68,6 @@ export class GalleryFile {
     return Math.trunc(filesAmount / PER_PAGE) + onePage;
   }
 
-  async getAllFiles(directory: string, files?: string[]): Promise<string[]> {
-    const dir = await opendir(directory);
-
-    files = files || [];
-
-    for await (const file of dir) {
-      if (file.name.startsWith('.')) continue;
-
-      const isDir = await this.isDirectory(directory + '/' + file.name);
-
-      if (isDir) {
-        files = await this.getAllFiles(directory + '/' + file.name, files);
-      } else {
-        const pathWithoutBuiltFolder = directory.split('/').slice(2).join('/');
-        files.push(pathWithoutBuiltFolder + '/' + file.name);
-      }
-    }
-    return files;
-  }
-
   async getImagesPerPage(images: string[], page: number, perPage: number): Promise<string[]> {
     const endIndex = page * perPage;
     const start = endIndex - perPage;
@@ -99,7 +79,7 @@ export class GalleryFile {
     return await this.getImagesPerPage(images, page, PER_PAGE);
   }
 
-  async getImagesFromDB(limit: number) {
+  async getImagesFromDB(limit: number): Promise<string[]> {
     const bdImages = await images.find({}, {_id: 0, metadata: 0, __v: 0}).limit(limit);
     return bdImages.map((item) => item.path);
   }

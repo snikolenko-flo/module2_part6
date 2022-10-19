@@ -1,19 +1,19 @@
 import * as dotenv from 'dotenv';
-dotenv.config();
 import express from 'express';
+import mongoose from 'mongoose';
 import { loginRouter } from './login/router.js';
 import { galleryRouter } from './gallery/router.js';
 import { galleryHtmlRouter } from './gallery/gallery.html.router.js';
 import { checkAuthorization } from './services/auth.service.js';
 import { addDefaultUsersToDB, addImagesToDB } from './services/db-service.js';
-import mongoose from 'mongoose';
+import { log } from './helper/logger.js';
 
-const IMAGES_DIR = process.env.IMAGES_DIR;
+dotenv.config();
+const imagesdir = process.env.IMAGES_DIR;
 const hostname = process.env.HOST;
 const port = process.env.PORT;
+const mongourl = process.env.MONGO_URL;
 const app = express();
-
-console.log(`Images dir: ${IMAGES_DIR}`);
 
 app.use(express.static('built'));
 app.use('/', loginRouter);
@@ -22,10 +22,10 @@ app.use('/gallery.html', galleryHtmlRouter);
 app.use('/gallery', checkAuthorization, galleryRouter);
 app.use('/upload', checkAuthorization, galleryRouter);
 
-mongoose.connect('mongodb://localhost:27017/test').then(() => console.log('Database is connected.'));
-addDefaultUsersToDB().then(() => console.log('Default users have been added to DB.'));
-addImagesToDB(IMAGES_DIR).then(() => console.log('Images have been added to DB.'));
+mongoose.connect(mongourl).then(() => console.log(`Database is running at ${mongourl}`));
+addDefaultUsersToDB().then(() => log.info('Default users have been added to DB.'));
+addImagesToDB(imagesdir).then(() => log.info('Images have been added to DB.'));
 
 app.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+  console.log(`Server is running at http://${hostname}:${port}/`);
 });
