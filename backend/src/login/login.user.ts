@@ -11,8 +11,8 @@ export class LoginUser {
     return JSON.parse(body);
   }
 
-  async findUser(email: string): Promise<User> {
-    const user: User = await findUserInDB(email);
+  async findUser(email: string) {
+    const user = await findUserInDB(email);
     return user;
   }
 }

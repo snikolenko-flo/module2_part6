@@ -24,9 +24,9 @@ export async function uploadImageDataToDB(req): Promise<void> {
   image.save().then(() => log.info(`The image ${filePath} was saved`));
 }
 
-export async function findUserInDB(email: string): Promise<User> {
+export async function findUserInDB(email: string){
   const user = await users.findOne({email: email}, {_id: 0, __v: 0} ).exec();
-  return user.toObject();
+  return user;
 }
 
 export async function getImagesNumber(): Promise<number> {
