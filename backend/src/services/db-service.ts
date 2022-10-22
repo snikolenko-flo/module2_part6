@@ -3,6 +3,7 @@ import { User } from '../models/user.model.js';
 import { Image } from '../models/image.model.js';
 import { GalleryFile } from '../gallery/gallery.file.js';
 import { log } from '../helper/logger.js';
+import mongoose from 'mongoose';
 
 const GalleryService = new GalleryFile();
 
@@ -99,5 +100,38 @@ export class DbService {
   async getImagesNumber(): Promise<number> {
     const imagesNumber = await Image.count();
     return imagesNumber;
+  }
+
+  private async connectToDb(mongoUrl) {
+    try {
+      await mongoose.connect(mongoUrl);
+      console.log(`Database is running at ${mongoUrl}`);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  private async addDefaultUsersToDB() {
+    try {
+      await this.addDefaultUsers();
+      log.info('Default users have been added to DB.');
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  private async addImagesDataToDB(imagesDir) {
+    try {
+      await this.addImagesData(imagesDir);
+      log.info('Images have been added to DB.');
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async startDb(imagesDir, mongoUrl) {
+    await this.connectToDb(mongoUrl);
+    await this.addDefaultUsersToDB();
+    await this.addImagesDataToDB(imagesDir);
   }
 }
