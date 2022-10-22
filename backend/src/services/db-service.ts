@@ -17,9 +17,13 @@ export async function uploadImageDataToDB(req): Promise<void> {
   const isImage = await images.findOne({ path: pathWithoutBuiltFolder }).exec();
   if (isImage!==null) return;
 
+  const date = new Date();
+  console.log(`date: ${date}`);
+
   const image = new images({
     path: pathWithoutBuiltFolder,
     metadata: fileStat,
+    date: date
   });
   image.save().then(() => log.info(`The image ${filePath} was saved`));
 }
@@ -85,9 +89,11 @@ export async function addImagesToDB(directory: string): Promise<void> {
 
       if (isImage!==null) return;
 
+      const date = new Date();
       const image = new images({
         path: pathWithoutBuiltFolder,
         metadata: fileStat,
+        date: date
       });
       image.save();
     }

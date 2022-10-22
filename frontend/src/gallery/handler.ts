@@ -60,6 +60,11 @@ export async function uploadImage(event: Event): Promise<void> {
 
   try {
     await fetch(url, options);
+    const pageLimit: number = urlService.getPageLimitFromUrl();
+    const pageNumber: number = urlService.getPageNumberFromUrl();
+    const limitStep = 1;
+
+    manager.url.addParametersToUrl(pageNumber, pageLimit+limitStep);
     location.reload();
   } catch (e) {
     alert(e);
