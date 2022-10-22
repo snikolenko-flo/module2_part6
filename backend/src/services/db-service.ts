@@ -1,6 +1,6 @@
 import { opendir, stat } from 'node:fs/promises';
-import { users } from '../models/user.model.js';
-import { images } from '../models/image.model.js';
+import { User } from '../models/user.model.js';
+import { Image } from '../models/image.model.js';
 import { GalleryFile } from '../gallery/gallery.file.js';
 import { log } from '../helper/logger.js';
 
@@ -12,12 +12,12 @@ export class DbService {
     const fileStat = await stat(filePath);
     const pathWithoutBuiltFolder = filePath.split('/').slice(1).join('/');
 
-    const isImage = await images.findOne({ path: pathWithoutBuiltFolder }).exec();
+    const isImage = await Image.findOne({ path: pathWithoutBuiltFolder }).exec();
     if (isImage) return;
 
     const date = new Date();
 
-    const image = new images({
+    const image = new Image({
       path: pathWithoutBuiltFolder,
       metadata: fileStat,
       date: date
@@ -44,12 +44,12 @@ export class DbService {
         const fileStat = await stat(filePath);
 
         const pathWithoutBuiltFolder = directoryWithoutBuiltFolder + '/' + file.name;
-        const isImage = await images.findOne({ path: pathWithoutBuiltFolder }).exec();
+        const isImage = await Image.findOne({ path: pathWithoutBuiltFolder }).exec();
 
-        if (isImage!==null) return;
+        if (isImage) return;
 
         const date = new Date();
-        const image = new images({
+        const image = new Image({
           path: pathWithoutBuiltFolder,
           metadata: fileStat,
           date: date
@@ -66,24 +66,24 @@ export class DbService {
       'vkotikov@flo.team',
     ];
 
-    const records = await users.find({ 'email': { $in: defaultUsersArray } });
+    const records = await User.find({ 'email': { $in: defaultUsersArray } });
     if (records.length) return;
 
-    const asergeev = new users({
+    const asergeev = new User({
       email: 'asergeev@flo.team',
       password: 'jgF5tn4F',
     });
     await asergeev.save();
     log.info(`The user ${asergeev.email} was saved to DB.`);
 
-    const tpupkin = new users({
+    const tpupkin = new User({
       email: 'tpupkin@flo.team',
       password: 'tpupkin@flo.team',
     });
     await tpupkin.save();
     log.info(`The user ${tpupkin.email} was saved to DB.`);
 
-    const vkotikov = new users({
+    const vkotikov = new User({
       email: 'vkotikov@flo.team',
       password: 'po3FGas8',
     });
@@ -92,12 +92,12 @@ export class DbService {
   }
 
   async findUser(email: string){
-    const user = await users.findOne({email: email}, {_id: 0, __v: 0} ).exec();
+    const user = await User.findOne({email: email}, {_id: 0, __v: 0} ).exec();
     return user;
   }
 
   async getImagesNumber(): Promise<number> {
-    const imagesNumber = await images.count();
+    const imagesNumber = await Image.count();
     return imagesNumber;
   }
 }

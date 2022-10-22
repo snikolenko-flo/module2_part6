@@ -6,4 +6,4 @@ const ImagesSchema: Schema = new Schema({
   date: {type: Date}
 });
 
-export const images = mongoose.model('Image', ImagesSchema);
+export const Image = mongoose.model('Image', ImagesSchema);

@@ -1,6 +1,6 @@
 import { PER_PAGE } from '../data/constants.js';
 import { opendir, stat } from 'node:fs/promises';
-import { images } from '../models/image.model.js';
+import { Image } from '../models/image.model.js';
 
 export class GalleryFile {
   async getFilesAmount(directory: string, counter?: number): Promise<number> {
@@ -80,7 +80,7 @@ export class GalleryFile {
   }
 
   async getImagesFromDB(limit: number): Promise<string[]> {
-    const bdImages = await images.find({}, {_id: 0, metadata: 0, __v: 0}).sort({date: -1}).limit(limit);
+    const bdImages = await Image.find({}, {_id: 0, metadata: 0, __v: 0}).sort({date: -1}).limit(limit);
     function sortFunction(a, b) {
       return a.date - b.date;
     }
