@@ -1,6 +1,8 @@
 import { User } from '../interfaces/user.js';
 import { Request } from 'express';
-import { findUserInDB } from '../services/db-service.js';
+import { DbService } from '../services/db-service.js';
+
+const dbService = new DbService();
 
 export class LoginUser {
   async getBody(req: Request): Promise<User> {
@@ -12,7 +14,7 @@ export class LoginUser {
   }
 
   async findUser(email: string) {
-    const user = await findUserInDB(email);
+    const user = await dbService.findUser(email);
     return user;
   }
 }

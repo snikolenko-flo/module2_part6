@@ -5,7 +5,7 @@ import { loginRouter } from './login/router.js';
 import { galleryRouter } from './gallery/router.js';
 import { galleryHtmlRouter } from './gallery/gallery.html.router.js';
 import { checkAuthorization } from './services/auth.service.js';
-import { addDefaultUsersToDB, addImagesToDB } from './services/db-service.js';
+import { DbService } from './services/db-service.js';
 import { log } from './helper/logger.js';
 
 dotenv.config();
@@ -22,9 +22,11 @@ app.use('/gallery.html', galleryHtmlRouter);
 app.use('/gallery', checkAuthorization, galleryRouter);
 app.use('/upload', checkAuthorization, galleryRouter);
 
+const dbService = new DbService();
+
 mongoose.connect(mongourl).then(() => console.log(`Database is running at ${mongourl}`));
-addDefaultUsersToDB().then(() => log.info('Default users have been added to DB.'));
-addImagesToDB(imagesdir).then(() => log.info('Images have been added to DB.'));
+dbService.addDefaultUsers().then(() => log.info('Default users have been added to DB.'));
+dbService.addImagesData(imagesdir).then(() => log.info('Images have been added to DB.'));
 
 app.listen(port, hostname, () => {
   console.log(`Server is running at http://${hostname}:${port}/`);
