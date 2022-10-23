@@ -5,6 +5,7 @@ import { GalleryFile } from '../gallery/gallery.file.js';
 import { log } from '../helper/logger.js';
 import mongoose from 'mongoose';
 import { FileSystemService } from './file.system.service.js';
+import { PER_PAGE } from '../data/constants.js';
 
 const galleryService = new GalleryFile();
 const fsService = new FileSystemService();
@@ -102,6 +103,18 @@ export class DbService {
   async getImagesNumber(): Promise<number> {
     const imagesNumber = await Image.count();
     return imagesNumber;
+  }
+
+  private async getImagesForLimit(limit: number): Promise<string[]> {
+    const bdImages = await Image.find({}).select(['path', 'date']).sort({date: -1}).limit(limit);
+    const sortFromOldToNew = (a, b) => a.date - b.date;
+    bdImages.sort(sortFromOldToNew);
+    return bdImages.map((item) => item.path);
+  }
+
+  async getImages(page: number, limit: number): Promise<string[]> {
+    const images = await this.getImagesForLimit(limit);
+    return await galleryService.getImagesPerPage(images, page, PER_PAGE);
   }
 
   private async connectToDb(mongoUrl) {

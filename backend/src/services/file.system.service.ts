@@ -1,5 +1,5 @@
 import fs from 'fs';
-import {mkdir, stat, writeFile} from 'node:fs/promises';
+import { mkdir, stat, writeFile } from 'node:fs/promises';
 
 export class FileSystemService {
   fileExists(filePath: string): boolean {

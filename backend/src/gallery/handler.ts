@@ -4,9 +4,11 @@ import { GalleryManager } from './gallery.manager.js';
 import { UrlService } from '../services/url.service.js';
 import { log } from '../helper/logger.js';
 import { Request, Response } from 'express';
+import { DbService } from '../services/db-service.js';
 
 const manager = new GalleryManager();
 const urlService = new UrlService();
+const dbService = new DbService();
 const IMAGES_DIR = process.env.IMAGES_DIR;
 
 export async function getGallery(req: Request, res: Response) {
@@ -29,6 +31,6 @@ export async function getGallery(req: Request, res: Response) {
   let pagesAmount = await manager.file.getPagesAmount(IMAGES_DIR, pageLimit);
   if (pagesAmount > total) pagesAmount = total;
 
-  const imagesPaths = await manager.file.getImages(pageNumber, pageLimit);
+  const imagesPaths = await dbService.getImages(pageNumber, pageLimit);
   manager.response.sendImages(res, pagesAmount, imagesPaths);
 }
