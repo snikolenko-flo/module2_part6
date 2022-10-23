@@ -20,4 +20,8 @@ export class UrlService {
     const limit = url.searchParams.get('limit');
     return parseInt(limit);
   }
+
+  getPathFromRequest(req: Request): string {
+    return req.files[0].path;
+  }
 }

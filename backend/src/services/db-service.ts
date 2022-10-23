@@ -4,14 +4,16 @@ import { Image } from '../models/image.model.js';
 import { GalleryFile } from '../gallery/gallery.file.js';
 import { log } from '../helper/logger.js';
 import mongoose from 'mongoose';
+import { FileSystemService } from './file.system.service.js';
 
-const GalleryService = new GalleryFile();
+const galleryService = new GalleryFile();
+const fsService = new FileSystemService();
 
 export class DbService {
   async uploadImageData(filePath): Promise<void> {
 
-    const fileStat = await stat(filePath);
-    const pathWithoutBuiltFolder = filePath.split('/').slice(1).join('/');
+    const fileMetadata = await fsService.getFileMetadata(filePath);
+    const pathWithoutBuiltFolder = fsService.removeFirstDirFromPath(filePath);
 
     const isImage = await Image.findOne({ path: pathWithoutBuiltFolder }).exec();
     if (isImage) return;
@@ -20,7 +22,7 @@ export class DbService {
 
     const image = new Image({
       path: pathWithoutBuiltFolder,
-      metadata: fileStat,
+      metadata: fileMetadata,
       date: date
     });
 
@@ -37,7 +39,7 @@ export class DbService {
       const directoryWithoutBuiltFolder = directory.split('/').slice(2).join('/');
       const filePath = directory + '/' + file.name;
 
-      const isDir = await GalleryService.isDirectory(filePath);
+      const isDir = await galleryService.isDirectory(filePath);
 
       if (isDir) {
         await this.addImagesData(filePath);

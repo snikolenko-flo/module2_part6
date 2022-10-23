@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { mkdir, writeFile } from 'node:fs/promises';
+import {mkdir, stat, writeFile} from 'node:fs/promises';
 
 export class FileSystemService {
   fileExists(filePath: string): boolean {
@@ -16,5 +16,14 @@ export class FileSystemService {
 
   async createDirectory(dirName: string) {
     await mkdir(dirName, {recursive: true});
+  }
+
+  removeFirstDirFromPath(filePath) {
+    return filePath.split('/').slice(1).join('/');
+  }
+
+  async getFileMetadata(filePath) {
+    const fileStat = await stat(filePath);
+    return fileStat;
   }
 }
