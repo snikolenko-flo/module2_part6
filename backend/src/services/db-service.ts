@@ -37,17 +37,14 @@ export class DbService {
     for await (const file of dir) {
       if (file.name.startsWith('.')) continue;
 
-      const directoryWithoutBuiltFolder = directory.split('/').slice(2).join('/');
       const filePath = directory + '/' + file.name;
-
       const isDir = await galleryService.isDirectory(filePath);
 
       if (isDir) {
         await this.addImagesData(filePath);
       } else {
         const fileStat = await stat(filePath);
-
-        const pathWithoutBuiltFolder = directoryWithoutBuiltFolder + '/' + file.name;
+        const pathWithoutBuiltFolder = fsService.getPathWithoutBuiltFolder(directory, file.name);
         const isImage = await Image.findOne({ path: pathWithoutBuiltFolder }).exec();
 
         if (isImage) return;

@@ -18,8 +18,13 @@ export class FileSystemService {
     await mkdir(dirName, {recursive: true});
   }
 
-  removeFirstDirFromPath(filePath) {
+  removeFirstDirFromPath(filePath: string): string {
     return filePath.split('/').slice(1).join('/');
+  }
+
+  getPathWithoutBuiltFolder(directory: string, fileName: string): string {
+    const directoryWithoutBuiltFolder = directory.split('/').slice(2).join('/');
+    return directoryWithoutBuiltFolder + '/' + fileName;
   }
 
   async getFileMetadata(filePath) {
