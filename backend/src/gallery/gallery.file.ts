@@ -66,10 +66,4 @@ export class GalleryFile {
 
     return Math.trunc(filesAmount / PER_PAGE) + onePage;
   }
-
-  async getImagesPerPage(images: string[], page: number, perPage: number): Promise<string[]> {
-    const endIndex = page * perPage;
-    const start = endIndex - perPage;
-    return images.slice(start, endIndex);
-  }
 }

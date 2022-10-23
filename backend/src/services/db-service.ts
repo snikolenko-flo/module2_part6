@@ -102,16 +102,27 @@ export class DbService {
     return imagesNumber;
   }
 
-  private async getImagesForLimit(limit: number): Promise<string[]> {
-    const bdImages = await Image.find({}).select(['path', 'date']).sort({date: -1}).limit(limit);
-    const sortFromOldToNew = (a, b) => a.date - b.date;
-    bdImages.sort(sortFromOldToNew);
-    return bdImages.map((item) => item.path);
+  private async getImagesPerPage(images: string[], page: number, perPage: number): Promise<string[]> {
+    const endIndex = page * perPage;
+    const start = endIndex - perPage;
+    return images.slice(start, endIndex);
+  }
+
+  private sortImagesFromOldToNew(images) {
+    return images.sort((a,b) => a.date - b.date);
+  }
+
+  private retrieveImagesPaths(images) {
+    return images.map((item) => item.path);
   }
 
   async getImages(page: number, limit: number): Promise<string[]> {
-    const images = await this.getImagesForLimit(limit);
-    return await galleryService.getImagesPerPage(images, page, PER_PAGE);
+    const images = await Image.find({}).select(['path', 'date']).sort({date: -1}).limit(limit);
+
+    const sortedImages = this.sortImagesFromOldToNew(images);
+    const imagesPaths = this.retrieveImagesPaths(sortedImages);
+
+    return this.getImagesPerPage(imagesPaths, page, PER_PAGE);
   }
 
   private async connectToDb(mongoUrl) {
