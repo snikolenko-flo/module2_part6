@@ -93,7 +93,7 @@ export class DbService {
   }
 
   async findUser(email: string){
-    const user = await User.findOne({email: email}, {_id: 0, __v: 0} ).exec();
+    const user = await User.findOne({email: email}).select(['email', 'password']).exec();
     return user;
   }
 

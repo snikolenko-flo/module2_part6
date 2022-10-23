@@ -80,11 +80,9 @@ export class GalleryFile {
   }
 
   async getImagesFromDB(limit: number): Promise<string[]> {
-    const bdImages = await Image.find({}, {_id: 0, metadata: 0, __v: 0}).sort({date: -1}).limit(limit);
-    function sortFunction(a, b) {
-      return a.date - b.date;
-    }
-    bdImages.sort(sortFunction);
+    const bdImages = await Image.find({}).select(['path', 'date']).sort({date: -1}).limit(limit);
+    const sortFromOldToNew = (a, b) => a.date - b.date;
+    bdImages.sort(sortFromOldToNew);
     return bdImages.map((item) => item.path);
   }
 }
