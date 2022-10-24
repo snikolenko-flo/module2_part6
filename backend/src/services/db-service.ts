@@ -36,27 +36,32 @@ export class DbService {
       const dir = await opendir(directory);
 
       for await (const file of dir) {
-        if (file.name.startsWith('.')) continue;
+        try {
+          if (file.name.startsWith('.')) continue;
 
-        const filePath = directory + '/' + file.name;
-        const isDir = await galleryService.isDirectory(filePath);
+          const filePath = directory + '/' + file.name;
+          const isDir = await galleryService.isDirectory(filePath);
 
-        if (isDir) {
-          await this.addImagesData(filePath);
-        } else {
-          const fileStat = await stat(filePath);
-          const pathWithoutBuiltFolder = fsService.getPathWithoutBuiltFolder(directory, file.name);
-          const isImage = await Image.findOne({ path: pathWithoutBuiltFolder }).exec();
+          if (isDir) {
+            await this.addImagesData(filePath);
+          } else {
+            const fileStat = await stat(filePath);
+            const pathWithoutBuiltFolder = fsService.getPathWithoutBuiltFolder(directory, file.name);
+            const isImage = await Image.findOne({ path: pathWithoutBuiltFolder }).exec();
 
-          if (isImage) return;
+            if (isImage) return;
 
-          const date = new Date();
-          const image = new Image({
-            path: pathWithoutBuiltFolder,
-            metadata: fileStat,
-            date: date
-          });
-          await image.save();
+            const date = new Date();
+            const image = new Image({
+              path: pathWithoutBuiltFolder,
+              metadata: fileStat,
+              date: date
+            });
+            await image.save();
+          }
+        } catch (e){
+          log.error(e);
+          console.log(e);
         }
       }
     } catch (e) {
