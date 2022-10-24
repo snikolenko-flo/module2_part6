@@ -9,6 +9,8 @@ dotenv.config();
 
 const imagesDir = process.env.IMAGES_DIR;
 const mongoUrl = process.env.MONGO_URL;
+const hostname = process.env.HOST;
+const port = process.env.PORT;
 
 const dbService = new DbService();
 dbService.startDb(imagesDir, mongoUrl);
@@ -21,9 +23,6 @@ app.use('/login', loginRouter);
 app.use('/gallery.html', galleryHtmlRouter);
 app.use('/gallery', checkAuthorization, galleryRouter);
 app.use('/upload', checkAuthorization, galleryRouter);
-
-const hostname = process.env.HOST;
-const port = process.env.PORT;
 
 app.listen(port, hostname, () => {
   console.log(`Server is running at http://${hostname}:${port}/`);

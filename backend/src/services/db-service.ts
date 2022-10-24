@@ -11,7 +11,7 @@ const galleryService = new GalleryFile();
 const fsService = new FileSystemService();
 
 export class DbService {
-  async uploadImageData(filePath): Promise<void> {
+  async uploadImageData(filePath: string): Promise<void> {
 
     const fileMetadata = await fsService.getFileMetadata(filePath);
     const pathWithoutBuiltFolder = fsService.removeFirstDirFromPath(filePath);
@@ -118,11 +118,11 @@ export class DbService {
     return images.slice(start, endIndex);
   }
 
-  private sortImagesFromOldToNew(images) {
+  private sortImagesFromOldToNew(images): object[] {
     return images.sort((a,b) => a.date - b.date);
   }
 
-  private retrieveImagesPaths(images) {
+  private retrieveImagesPaths(images): string[] {
     return images.map((item) => item.path);
   }
 
@@ -140,7 +140,7 @@ export class DbService {
     }
   }
 
-  private async connectToDb(mongoUrl) {
+  private async connectToDb(mongoUrl: string): Promise<void> {
     try {
       await mongoose.connect(mongoUrl);
       console.log(`Database is running at ${mongoUrl}`);
@@ -149,7 +149,7 @@ export class DbService {
     }
   }
 
-  private async addDefaultUsersToDB() {
+  private async addDefaultUsersToDB(): Promise<void> {
     try {
       await this.addDefaultUsers();
       log.info('Default users have been added to DB.');
@@ -158,7 +158,7 @@ export class DbService {
     }
   }
 
-  private async addImagesDataToDB(imagesDir) {
+  private async addImagesDataToDB(imagesDir: string): Promise<void> {
     try {
       await this.addImagesData(imagesDir);
       log.info('Images have been added to DB.');
@@ -167,7 +167,7 @@ export class DbService {
     }
   }
 
-  async startDb(imagesDir, mongoUrl) {
+  async startDb(imagesDir: string, mongoUrl: string): Promise<void> {
     await this.connectToDb(mongoUrl);
     await this.addDefaultUsersToDB();
     await this.addImagesDataToDB(imagesDir);
