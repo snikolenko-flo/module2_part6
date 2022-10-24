@@ -45,7 +45,7 @@ export class LoginService {
       email: email,
       password: password,
     };
-    console.log('request to get a token');
+
     const url = `${BASE_URL}/login`;
 
     const response = await fetch(url, {

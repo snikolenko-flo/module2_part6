@@ -32,31 +32,36 @@ export class DbService {
   }
 
   async addImagesData(directory: string): Promise<void> {
-    const dir = await opendir(directory);
+    try {
+      const dir = await opendir(directory);
 
-    for await (const file of dir) {
-      if (file.name.startsWith('.')) continue;
+      for await (const file of dir) {
+        if (file.name.startsWith('.')) continue;
 
-      const filePath = directory + '/' + file.name;
-      const isDir = await galleryService.isDirectory(filePath);
+        const filePath = directory + '/' + file.name;
+        const isDir = await galleryService.isDirectory(filePath);
 
-      if (isDir) {
-        await this.addImagesData(filePath);
-      } else {
-        const fileStat = await stat(filePath);
-        const pathWithoutBuiltFolder = fsService.getPathWithoutBuiltFolder(directory, file.name);
-        const isImage = await Image.findOne({ path: pathWithoutBuiltFolder }).exec();
+        if (isDir) {
+          await this.addImagesData(filePath);
+        } else {
+          const fileStat = await stat(filePath);
+          const pathWithoutBuiltFolder = fsService.getPathWithoutBuiltFolder(directory, file.name);
+          const isImage = await Image.findOne({ path: pathWithoutBuiltFolder }).exec();
 
-        if (isImage) return;
+          if (isImage) return;
 
-        const date = new Date();
-        const image = new Image({
-          path: pathWithoutBuiltFolder,
-          metadata: fileStat,
-          date: date
-        });
-        await image.save();
+          const date = new Date();
+          const image = new Image({
+            path: pathWithoutBuiltFolder,
+            metadata: fileStat,
+            date: date
+          });
+          await image.save();
+        }
       }
+    } catch (e) {
+      log.error(e);
+      console.log(e);
     }
   }
 
@@ -67,29 +72,34 @@ export class DbService {
       'vkotikov@flo.team',
     ];
 
-    const records = await User.find({ 'email': { $in: defaultUsersArray } });
-    if (records.length) return;
+    try {
+      const records = await User.find({ 'email': { $in: defaultUsersArray } });
+      if (records.length) return;
 
-    const asergeev = new User({
-      email: 'asergeev@flo.team',
-      password: 'jgF5tn4F',
-    });
-    await asergeev.save();
-    log.info(`The user ${asergeev.email} was saved to DB.`);
+      const asergeev = new User({
+        email: 'asergeev@flo.team',
+        password: 'jgF5tn4F',
+      });
+      await asergeev.save();
+      log.info(`The user ${asergeev.email} was saved to DB.`);
 
-    const tpupkin = new User({
-      email: 'tpupkin@flo.team',
-      password: 'tpupkin@flo.team',
-    });
-    await tpupkin.save();
-    log.info(`The user ${tpupkin.email} was saved to DB.`);
+      const tpupkin = new User({
+        email: 'tpupkin@flo.team',
+        password: 'tpupkin@flo.team',
+      });
+      await tpupkin.save();
+      log.info(`The user ${tpupkin.email} was saved to DB.`);
 
-    const vkotikov = new User({
-      email: 'vkotikov@flo.team',
-      password: 'po3FGas8',
-    });
-    await vkotikov.save();
-    log.info(`The user ${vkotikov.email} was saved to DB.`);
+      const vkotikov = new User({
+        email: 'vkotikov@flo.team',
+        password: 'po3FGas8',
+      });
+      await vkotikov.save();
+      log.info(`The user ${vkotikov.email} was saved to DB.`);
+    } catch (e) {
+      log.error(e);
+      console.log(e);
+    }
   }
 
   async findUser(email: string){
@@ -117,12 +127,17 @@ export class DbService {
   }
 
   async getImages(page: number, limit: number): Promise<string[]> {
-    const images = await Image.find({}).select(['path', 'date']).sort({date: -1}).limit(limit);
+    try {
+      const images = await Image.find({}).select(['path', 'date']).sort({date: -1}).limit(limit);
 
-    const sortedImages = this.sortImagesFromOldToNew(images);
-    const imagesPaths = this.retrieveImagesPaths(sortedImages);
+      const sortedImages = this.sortImagesFromOldToNew(images);
+      const imagesPaths = this.retrieveImagesPaths(sortedImages);
 
-    return this.getImagesPerPage(imagesPaths, page, PER_PAGE);
+      return this.getImagesPerPage(imagesPaths, page, PER_PAGE);
+    } catch (e) {
+      log.error(e);
+      console.log(e);
+    }
   }
 
   private async connectToDb(mongoUrl) {
