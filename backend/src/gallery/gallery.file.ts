@@ -1,4 +1,4 @@
-import { PER_PAGE, IMAGES_DIR } from '../data/constants.js';
+import { PER_PAGE } from '../data/constants.js';
 import { opendir, stat } from 'node:fs/promises';
 
 export class GalleryFile {
@@ -42,34 +42,28 @@ export class GalleryFile {
     return Math.trunc(filesAmount / PER_PAGE) + onePage;
   }
 
-  async getAllFiles(directory: string, files?: string[]): Promise<string[]> {
-    const dir = await opendir(directory);
+  async getTotalPagesForLimit(dir: string, limit: number): Promise<number> {
+    const filesAmount = limit;
 
-    files = files || [];
+    const onePage = 1;
+    if (filesAmount <= PER_PAGE) return onePage;
 
-    for await (const file of dir) {
-      if (file.name.startsWith('.')) continue;
+    const remainder = filesAmount % PER_PAGE;
+    if (remainder === 0) return filesAmount / PER_PAGE;
 
-      const isDir = await this.isDirectory(directory + '/' + file.name);
-
-      if (isDir) {
-        files = await this.getAllFiles(directory + '/' + file.name, files);
-      } else {
-        const pathWithoutBuiltFolder = directory.split('/').slice(2).join('/');
-        files.push(pathWithoutBuiltFolder + '/' + file.name);
-      }
-    }
-    return files;
+    return Math.trunc(filesAmount / PER_PAGE) + onePage;
   }
 
-  async getImagesPerPage(images: string[], page: number, perPage: number): Promise<string[]> {
-    const endIndex = page * perPage;
-    const start = endIndex - perPage;
-    return images.slice(start, endIndex);
-  }
+  async getPagesAmount(dir: string, limit: number): Promise<number> {
 
-  async getImages(page: number): Promise<string[]> {
-    const images = await this.getAllFiles(IMAGES_DIR);
-    return await this.getImagesPerPage(images, page, PER_PAGE);
+    const filesAmount = limit;
+
+    const onePage = 1;
+    if (filesAmount <= PER_PAGE) return onePage;
+
+    const remainder = filesAmount % PER_PAGE;
+    if (remainder === 0) return filesAmount / PER_PAGE;
+
+    return Math.trunc(filesAmount / PER_PAGE) + onePage;
   }
 }

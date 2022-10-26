@@ -25,7 +25,7 @@ export class GalleryService {
     return pagesList;
   }
 
-  redirectToPage(pageNumber: number): void {
-    window.location.href = `gallery.html?page=${pageNumber}`;
+  redirectToPage(pageNumber: number, pageLimit: number): void {
+    window.location.href = `gallery.html?page=${pageNumber}&limit=${pageLimit}`;
   }
 }

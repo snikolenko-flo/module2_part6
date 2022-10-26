@@ -1,3 +1,5 @@
+import { BASE_URL } from '../data/constants.js';
+
 export class UrlManipulationService {
   getPageNumberFromUrl(): number {
     const currentUrl: string = window.location.search;
@@ -22,5 +24,50 @@ export class UrlManipulationService {
     }
 
     return pageNumber;
+  }
+
+  async getLimit(): Promise<number> {
+    let limit = this.getPageLimitFromUrl();
+    if (!limit) {
+      limit = await this.fetchLimit();
+    }
+    return limit;
+  }
+
+  getPageLimitFromUrl(): number {
+    const currentUrl: string = window.location.search;
+
+    const searchParams: URLSearchParams = new URLSearchParams(currentUrl);
+
+    const limit: string = searchParams.get('limit');
+
+    if (!limit) return;
+
+    const pageLimit: number = parseInt(limit);
+
+    if (isNaN(pageLimit)) {
+      throw Error('The page number should be an integer');
+    }
+
+    if (!isFinite(pageLimit)) {
+      throw Error('The page number should be a finite integer');
+    }
+
+    return pageLimit;
+  }
+
+  async fetchLimit() {
+    const accessToken = localStorage.getItem('token');
+    const url = `${BASE_URL}/gallery/limit`;
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Authorization: accessToken,
+      },
+    });
+
+    const pageLimit = await response.json();
+    return pageLimit.limit;
   }
 }

@@ -9,6 +9,7 @@ export class RedirectService {
 
   redirectToLogin(): void {
     const pageNumber: number = this.urlService.getPageNumberFromUrl();
-    window.location.href = `../login?page=${pageNumber}`;
+    const pageLimit = this.urlService.getPageLimitFromUrl();
+    window.location.href = `../login?page=${pageNumber}&limit=${pageLimit}`;
   }
 }

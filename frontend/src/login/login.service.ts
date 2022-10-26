@@ -8,9 +8,13 @@ const urlService = new UrlManipulationService();
 const galleryService = new GalleryService();
 
 export class LoginService {
-  redirectToGallery(): void {
+  async redirectToGallery(): Promise<void> {
     const pageNumber: number = urlService.getPageNumberFromUrl();
-    galleryService.redirectToPage(pageNumber);
+    let pageLimit: number = urlService.getPageLimitFromUrl();
+    if(!pageLimit) {
+      pageLimit = await urlService.fetchLimit();
+    }
+    galleryService.redirectToPage(pageNumber, pageLimit);
   }
 
   handleEmailValidation(validatedEmail: ValidationResult, emailError: HTMLFormElement): void {
@@ -41,7 +45,7 @@ export class LoginService {
       email: email,
       password: password,
     };
-    console.log('request to get a token');
+
     const url = `${BASE_URL}/login`;
 
     const response = await fetch(url, {

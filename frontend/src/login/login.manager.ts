@@ -30,7 +30,7 @@ export class LoginManager {
     try {
       const result: TokenResponse = await this.loginService.fetchToken(email, password);
       tokenService.setToken(result.token);
-      this.loginService.redirectToGallery();
+      await this.loginService.redirectToGallery();
     } catch (e) {
       alert(e);
     }

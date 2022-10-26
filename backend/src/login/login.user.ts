@@ -1,6 +1,8 @@
 import { User } from '../interfaces/user.js';
-import { users } from '../users/users.js';
 import { Request } from 'express';
+import { DbService } from '../services/db-service.js';
+
+const dbService = new DbService();
 
 export class LoginUser {
   async getBody(req: Request): Promise<User> {
@@ -11,7 +13,8 @@ export class LoginUser {
     return JSON.parse(body);
   }
 
-  findUser(email: string) {
-    return users.find((user) => user.email == email);
+  async findUser(email: string) {
+    const user = await dbService.findUser(email);
+    return user;
   }
 }

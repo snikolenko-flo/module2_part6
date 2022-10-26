@@ -28,5 +28,8 @@
   "bugs": {
     "url": "https://github.com/snikolenko-flo/module2_part1_gallery/issues"
   },
-  "homepage": "https://github.com/snikolenko-flo/module2_part1_gallery#readme"
+  "homepage": "https://github.com/snikolenko-flo/module2_part1_gallery#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3"
+  }
 }
