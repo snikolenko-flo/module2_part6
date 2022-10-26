@@ -38,6 +38,7 @@ export abstract class Logger {
   }
 
   info(message: string) {
+
     this.writeLog('info', message);
   }
 

@@ -17,7 +17,6 @@ export async function login(req: Request, res: Response) {
 
     manager.response.sendToken(res);
   } catch (e) {
-    log.error(e);
-    console.log(e);
+    log.error(`${e} | function: login.`);
   }
 }

@@ -60,13 +60,11 @@ export class DbService {
             await image.save();
           }
         } catch (e){
-          log.error(e);
-          console.log(e);
+          log.error(`${e} | class: ${this.constructor.name} | function: addImagesData.`);
         }
       }
     } catch (e) {
-      log.error(e);
-      console.log(e);
+      log.error(`${e} | class: ${this.constructor.name} | function: addImagesData.`);
     }
   }
 
@@ -102,8 +100,7 @@ export class DbService {
       await vkotikov.save();
       log.info(`The user ${vkotikov.email} was saved to DB.`);
     } catch (e) {
-      log.error(e);
-      console.log(e);
+      log.error(`${e} | class: ${this.constructor.name} | function: addDefaultUsers.`);
     }
   }
 
@@ -140,8 +137,7 @@ export class DbService {
 
       return this.getImagesPerPage(imagesPaths, page, PER_PAGE);
     } catch (e) {
-      log.error(e);
-      console.log(e);
+      log.error(`${e} | class: ${this.constructor.name} | function: getItems.`);
     }
   }
 
@@ -150,7 +146,7 @@ export class DbService {
       await mongoose.connect(mongoUrl);
       console.log(`Database is running at ${mongoUrl}`);
     } catch (e) {
-      console.log(e);
+      log.error(`${e} | class: ${this.constructor.name} | function: connectToDb.`);
     }
   }
 
@@ -159,7 +155,7 @@ export class DbService {
       await this.addDefaultUsers();
       log.info('Default users have been added to DB.');
     } catch (e) {
-      console.log(e);
+      log.error(`${e} | class: ${this.constructor.name} | function: addDefaultUsersToDB.`);
     }
   }
 
@@ -168,7 +164,7 @@ export class DbService {
       await this.addImagesData(imagesDir);
       log.info('Images have been added to DB.');
     } catch (e) {
-      console.log(e);
+      log.error(`${e} | class: ${this.constructor.name} | function: addImagesDataToDB.`);
     }
   }
 
