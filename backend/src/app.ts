@@ -6,6 +6,7 @@ import { galleryHtmlRouter } from './gallery/gallery.html.router.js';
 import { checkAuthorization } from './services/auth.service.js';
 import { DbService } from './services/db-service.js';
 dotenv.config();
+import './login/auth.js';
 
 const imagesDir = process.env.IMAGES_DIR;
 const mongoUrl = process.env.MONGO_URL;
@@ -17,12 +18,14 @@ dbService.startDb(imagesDir, mongoUrl);
 
 const app = express();
 
+app.use(express.json());
 app.use(express.static('built'));
 app.use('/', loginRouter);
 app.use('/signup', signUpRouter);
 app.use('/login', loginRouter);
 app.use('/gallery.html', galleryHtmlRouter);
-app.use('/gallery', checkAuthorization, galleryRouter);
+app.use('/gallery', galleryRouter);
+//app.use('/gallery', checkAuthorization, galleryRouter);
 app.use('/upload', checkAuthorization, galleryRouter);
 
 app.listen(port, hostname, () => {

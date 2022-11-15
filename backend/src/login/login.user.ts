@@ -14,7 +14,7 @@ export class LoginUser {
       });
       return JSON.parse(body);
     } catch (e) {
-      log.error(`${e} in backend/src/logig/login.user.ts/LoginUser/getBody()`);
+      log.error(`${e} in backend/src/login/login.user.ts/LoginUser/getBody()`);
     }
   }
 

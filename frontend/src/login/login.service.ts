@@ -51,6 +51,9 @@ export class LoginService {
     const response = await fetch(url, {
       method: 'POST',
       body: JSON.stringify(user),
+      headers: {
+        'Content-Type': 'application/json'
+      },
     });
 
     const result: TokenResponse = await response.json();
