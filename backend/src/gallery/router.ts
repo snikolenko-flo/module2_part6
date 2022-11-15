@@ -20,6 +20,7 @@ galleryRouter.get('/', async(req, res) => {
 });
 
 galleryRouter.get('/limit', async(req, res) => {
+  console.log('We should get limit here');
   log.info(`Request "${req.originalUrl}" is got.`);
   await pageService.getLimit(req, res);
 });

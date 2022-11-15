@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 import express from 'express';
-import { loginRouter } from './login/router.js';
+import { loginRouter, signUpRouter } from './login/router.js';
 import { galleryRouter } from './gallery/router.js';
 import { galleryHtmlRouter } from './gallery/gallery.html.router.js';
 import { checkAuthorization } from './services/auth.service.js';
@@ -19,6 +19,7 @@ const app = express();
 
 app.use(express.static('built'));
 app.use('/', loginRouter);
+app.use('/signup', signUpRouter);
 app.use('/login', loginRouter);
 app.use('/gallery.html', galleryHtmlRouter);
 app.use('/gallery', checkAuthorization, galleryRouter);
