@@ -71,7 +71,7 @@ export class UrlManipulationService {
       const pageLimit = await response.json();
       return pageLimit.limit;
     } catch (e) {
-      alert(`The error "${e}" has happen in the function "frontend/src/services/url-manipulation.service.ts/UrlManipulationService/fetchLimit()"`);
+      alert(`The error "${e}" has happened in the function "frontend/src/services/url-manipulation.service.ts/UrlManipulationService/fetchLimit()"`);
     }
   }
 }

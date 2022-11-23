@@ -7,6 +7,7 @@ import { checkAuthorization } from './services/auth.service.js';
 import { DbService } from './services/db-service.js';
 dotenv.config();
 import './login/auth.js';
+import passport from 'passport';
 
 const imagesDir = process.env.IMAGES_DIR;
 const mongoUrl = process.env.MONGO_URL;
@@ -24,9 +25,8 @@ app.use('/', loginRouter);
 app.use('/signup', signUpRouter);
 app.use('/login', loginRouter);
 app.use('/gallery.html', galleryHtmlRouter);
-app.use('/gallery', galleryRouter);
-//app.use('/gallery', checkAuthorization, galleryRouter);
-app.use('/upload', checkAuthorization, galleryRouter);
+app.use('/gallery', passport.authenticate('jwt', { session: false }), galleryRouter);
+app.use('/upload', passport.authenticate('jwt', { session: false }), galleryRouter);
 
 app.listen(port, hostname, () => {
   console.log(`Server is running at http://${hostname}:${port}/`);

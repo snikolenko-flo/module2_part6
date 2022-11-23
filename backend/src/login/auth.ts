@@ -1,6 +1,7 @@
 import passport from 'passport';
 import { User } from '../models/user.model.js';
-
+import * as JWTstrategy from 'passport-jwt';
+import * as ExtractJWT from 'passport-jwt';
 import * as LocalStrategy from 'passport-local';
 
 passport.use(
@@ -46,6 +47,22 @@ passport.use(
         return done(null, user, { message: 'Logged in Successfully' });
       } catch (error) {
         return done(error);
+      }
+    }
+  )
+);
+
+passport.use(
+  new JWTstrategy.Strategy(
+    {
+      secretOrKey: 'TOP_SECRET',
+      jwtFromRequest: ExtractJWT.ExtractJwt.fromHeader('authorization')
+    },
+    async (payload, done) => {
+      try {
+        return done(null, payload.user);
+      } catch (error) {
+        done(error);
       }
     }
   )

@@ -24,10 +24,12 @@ signUpRouter.post(
   '/',
   passport.authenticate('signup', { session: false }),
   async (req, res, next) => {
-    res.json({
-      message: 'Signup successful',
-      user: req.body
-    });
+    console.log('req.body: ');
+    console.log(req.body);
+
+    const body = { email: req.body.email };
+    const token = jwt.sign({ user: body }, 'TOP_SECRET');
+    return res.json({ token });
   }
 );
 
@@ -42,6 +44,9 @@ loginRouter.post(
           if (err || !user) {
             const error = new Error(`An error ${err} has occurred for user ${user}.`);
 
+            log.error('Email or password are invalid.');
+            res.statusCode = 401;
+            res.end(JSON.stringify({ errorMessage: 'Email or password are invalid.' }));
             return next(error);
           }
 
@@ -51,6 +56,8 @@ loginRouter.post(
             async (error) => {
               if (error) return next(error);
 
+              console.log('user');
+              console.log(user);
               const body = { _id: user._id, email: user.email };
               const token = jwt.sign({ user: body }, 'TOP_SECRET');
 

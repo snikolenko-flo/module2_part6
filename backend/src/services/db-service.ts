@@ -144,7 +144,7 @@ export class DbService {
   private async connectToDb(mongoUrl: string): Promise<void> {
     try {
       await mongoose.connect(mongoUrl);
-      console.log(`Database is running at ${mongoUrl}`);
+      log.info(`Database is running at ${mongoUrl}`);
     } catch (e) {
       log.error(`${e} | class: ${this.constructor.name} | function: connectToDb.`);
     }
