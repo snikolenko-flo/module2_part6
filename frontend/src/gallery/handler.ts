@@ -9,11 +9,12 @@ export async function loadGallery(): Promise<void> {
   try {
     const pageNumber: number = urlService.getPageNumberFromUrl();
     const pageLimit: number = await urlService.getLimit();
-    const images = await manager.api.fetchImages(pageNumber, pageLimit);
+    const user: string = urlService.getUserFromUrl();
+    const images = await manager.api.fetchImages(pageNumber, pageLimit, user);
 
     manager.render.renderPagesList(images.total);
     manager.render.renderImages(images.objects);
-    manager.url.addParametersToUrl(pageNumber, pageLimit);
+    manager.url.addParametersToUrl(pageNumber, pageLimit, user);
   } catch (e) {
     if (!(e instanceof TypeError)) alert(e);
   }
@@ -27,11 +28,17 @@ export async function fetchGallery(event: Event): Promise<void> {
   if (!clickedPageNumber) return;
 
   const pageLimit: number = urlService.getPageLimitFromUrl();
+  const user: string = urlService.getUserFromUrl();
 
   try {
-    const images = await manager.api.fetchImages(clickedPageNumber, pageLimit);
+    let images = await manager.api.fetchImages(clickedPageNumber, pageLimit);
+    if(user) {
+      images = await manager.api.fetchImages(clickedPageNumber, pageLimit, user);
+      manager.url.addParametersToUrl(pageNumber, pageLimit, user);
+    } else {
+      manager.url.addParametersToUrl(pageNumber, pageLimit);
+    }
     manager.render.renderImages(images.objects);
-    manager.url.addParametersToUrl(pageNumber, pageLimit);
   } catch (e) {
     alert(e);
   }
@@ -62,9 +69,14 @@ export async function uploadImage(event: Event): Promise<void> {
     await fetch(url, options);
     const pageLimit: number = urlService.getPageLimitFromUrl();
     const pageNumber: number = urlService.getPageNumberFromUrl();
+    const user: string = urlService.getUserFromUrl();
     const limitStep = 1;
 
-    manager.url.addParametersToUrl(pageNumber, pageLimit+limitStep);
+    if(user) {
+      manager.url.addParametersToUrl(pageNumber, pageLimit+limitStep, user);
+    } else {
+      manager.url.addParametersToUrl(pageNumber, pageLimit+limitStep);
+    }
     location.reload();
   } catch (e) {
     alert(e);

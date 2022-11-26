@@ -15,11 +15,17 @@ export async function getGallery(req: Request, res: Response) {
 
   const pageNumber = urlService.getPageNumber(req);
   const pageLimit = urlService.getPageLimit(req);
+  const user = urlService.getUser(req);
 
   if (isNaN(pageNumber)) return manager.error.sendIsNanError(res);
   if (!isFinite(pageNumber)) return manager.error.sendFiniteError(res);
 
-  const total = await manager.file.getTotalPages(IMAGES_DIR);
+  let total = await manager.file.getTotalPages(IMAGES_DIR);
+  if(user) {
+    const userImagesNumber = await dbService.getUserImagesNumber(user);
+    total = await manager.file.getUserPagesNumber(IMAGES_DIR, userImagesNumber);
+  }
+
   const totalForLimit = await manager.file.getTotalPagesForLimit(IMAGES_DIR, pageLimit);
 
   if (pageNumber > total || pageNumber <= 0) return manager.error.sendWrongPageError(res, total);
@@ -31,6 +37,11 @@ export async function getGallery(req: Request, res: Response) {
   let pagesAmount = await manager.file.getPagesAmount(IMAGES_DIR, pageLimit);
   if (pagesAmount > total) pagesAmount = total;
 
-  const imagesPaths = await dbService.getImages(pageNumber, pageLimit);
-  manager.response.sendImages(res, pagesAmount, imagesPaths);
+  if(user) {
+    const imagesPaths = await dbService.getUserImages(pageNumber, pageLimit, user);
+    manager.response.sendImages(res, pagesAmount, imagesPaths);
+  } else {
+    const imagesPaths = await dbService.getImages(pageNumber, pageLimit);
+    manager.response.sendImages(res, pagesAmount, imagesPaths);
+  }
 }

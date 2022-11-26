@@ -11,7 +11,7 @@ const galleryService = new GalleryFile();
 const fsService = new FileSystemService();
 
 export class DbService {
-  async uploadImageData(filePath: string): Promise<void> {
+  async uploadImageData(filePath: string, userEmail: string): Promise<void> {
 
     const fileMetadata = await fsService.getFileMetadata(filePath);
     const pathWithoutBuiltFolder = fsService.removeFirstDirFromPath(filePath);
@@ -29,6 +29,10 @@ export class DbService {
 
     await image.save();
     log.info(`The image ${filePath} was saved`);
+
+    const user = await User.findOne({ 'email': userEmail }).exec();
+    user.images.push(image);
+    await user.save();
   }
 
   async addImagesData(directory: string): Promise<void> {
@@ -114,6 +118,13 @@ export class DbService {
     return imagesNumber;
   }
 
+  async getUserImagesNumber(user): Promise<number> {
+    const userImages = await User.find({'email': user}).select(['images']);
+    const array = userImages[0]['images'];
+
+    return array.length;
+  }
+
   private async getImagesPerPage(images: string[], page: number, perPage: number): Promise<string[]> {
     const endIndex = page * perPage;
     const start = endIndex - perPage;
@@ -132,6 +143,22 @@ export class DbService {
     try {
 
       const images = await Image.find({}).select(['path', 'date']).sort({date: -1}).limit(limit);
+
+      const sortedImages = this.sortImagesFromOldToNew(images);
+      const imagesPaths = this.retrieveImagesPaths(sortedImages);
+
+      return this.getImagesPerPage(imagesPaths, page, PER_PAGE);
+    } catch (e) {
+      log.error(`${e} | class: ${this.constructor.name} | function: getItems.`);
+    }
+  }
+
+  async getUserImages(page: number, limit: number, user?: string): Promise<string[]> {
+    try {
+
+      const userImages = await User.find({'email': user}).select(['images']);
+      const array = userImages[0]['images'];
+      const images = await Image.find({ _id: { $in: array } }).select(['path', 'date']).sort({date: -1}).limit(limit);
 
       const sortedImages = this.sortImagesFromOldToNew(images);
       const imagesPaths = this.retrieveImagesPaths(sortedImages);

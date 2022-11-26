@@ -26,6 +26,15 @@ export class UrlManipulationService {
     return pageNumber;
   }
 
+  getUserFromUrl(): string {
+    const currentUrl: string = window.location.search;
+
+    const searchParams: URLSearchParams = new URLSearchParams(currentUrl);
+    const user: string = searchParams.get('filter');
+
+    return user;
+  }
+
   async getLimit(): Promise<number> {
     let limit = this.getPageLimitFromUrl();
     if (!limit) {

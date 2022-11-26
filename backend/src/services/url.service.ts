@@ -21,6 +21,12 @@ export class UrlService {
     return parseInt(limit);
   }
 
+  getUser(req: Request): string {
+    const url: URL = this.getUrl(req, BASE_URL);
+    const user = url.searchParams.get('filter');
+    return user;
+  }
+
   getPathFromRequest(req: Request): string {
     return req.files[0].path;
   }
