@@ -3,7 +3,8 @@ import bcrypt from 'bcrypt';
 
 const UserSchema: Schema = new Schema({
   email: {type: String, required: true, unique: true},
-  password: {type: String, required: true}
+  password: {type: String, required: true},
+  images: [{ type: Schema.Types.ObjectId, ref: 'Image' }]
 });
 
 UserSchema.pre(

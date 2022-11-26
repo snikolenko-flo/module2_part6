@@ -35,6 +35,8 @@ galleryRouter.post('/', upload.any('img'), async(req: Request, res: Response): P
     return;
   }
 
+  console.log(`backend/src/gallery/router.ts/galleryRouter.post()/req.user: ${req.user}`);
+  console.log(req.user);
   const filePath = urlService.getPathFromRequest(req);
   await dbService.uploadImageData(filePath);
   await fileService.sendFile(req, res, './built/frontend/html/gallery.html', 'text/html');

@@ -130,6 +130,7 @@ export class DbService {
 
   async getImages(page: number, limit: number): Promise<string[]> {
     try {
+
       const images = await Image.find({}).select(['path', 'date']).sort({date: -1}).limit(limit);
 
       const sortedImages = this.sortImagesFromOldToNew(images);

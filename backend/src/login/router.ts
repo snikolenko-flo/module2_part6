@@ -56,8 +56,6 @@ loginRouter.post(
             async (error) => {
               if (error) return next(error);
 
-              console.log('user');
-              console.log(user);
               const body = { _id: user._id, email: user.email };
               const token = jwt.sign({ user: body }, 'TOP_SECRET');
 
