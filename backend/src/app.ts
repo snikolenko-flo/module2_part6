@@ -3,7 +3,6 @@ import express from 'express';
 import { loginRouter, signUpRouter } from './login/router.js';
 import { galleryRouter } from './gallery/router.js';
 import { galleryHtmlRouter } from './gallery/gallery.html.router.js';
-import { checkAuthorization } from './services/auth.service.js';
 import { DbService } from './services/db-service.js';
 dotenv.config();
 import './login/auth.js';

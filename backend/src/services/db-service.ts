@@ -19,18 +19,19 @@ export class DbService {
     const isImage = await Image.findOne({ path: pathWithoutBuiltFolder }).exec();
     if (isImage) return;
 
+    const user = await User.findOne({ 'email': userEmail }).exec();
     const date = new Date();
 
     const image = new Image({
       path: pathWithoutBuiltFolder,
       metadata: fileMetadata,
-      date: date
+      date: date,
+      user: user._id
     });
 
     await image.save();
     log.info(`The image ${filePath} was saved`);
 
-    const user = await User.findOne({ 'email': userEmail }).exec();
     user.images.push(image);
     await user.save();
   }
@@ -149,23 +150,22 @@ export class DbService {
 
       return this.getImagesPerPage(imagesPaths, page, PER_PAGE);
     } catch (e) {
-      log.error(`${e} | class: ${this.constructor.name} | function: getItems.`);
+      log.error(`${e} | class: ${this.constructor.name} | function: getImages.`);
     }
   }
 
-  async getUserImages(page: number, limit: number, user?: string): Promise<string[]> {
+  async getUserImages(page: number, limit: number, userEmail?: string): Promise<string[]> {
     try {
 
-      const userImages = await User.find({'email': user}).select(['images']);
-      const array = userImages[0]['images'];
-      const images = await Image.find({ _id: { $in: array } }).select(['path', 'date']).sort({date: -1}).limit(limit);
+      const user = await User.findOne({ 'email': userEmail }).exec();
+      const images = await Image.find({ user: user.id }).select(['path', 'date']).sort({date: -1}).limit(limit);
 
       const sortedImages = this.sortImagesFromOldToNew(images);
       const imagesPaths = this.retrieveImagesPaths(sortedImages);
 
       return this.getImagesPerPage(imagesPaths, page, PER_PAGE);
     } catch (e) {
-      log.error(`${e} | class: ${this.constructor.name} | function: getItems.`);
+      log.error(`${e} | class: ${this.constructor.name} | function: getImages.`);
     }
   }
 
