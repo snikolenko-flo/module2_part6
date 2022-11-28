@@ -31,9 +31,6 @@ export class DbService {
 
     await image.save();
     log.info(`The image ${filePath} was saved`);
-
-    user.images.push(image);
-    await user.save();
   }
 
   async addImagesData(directory: string): Promise<void> {
