@@ -7,9 +7,8 @@ export class GalleryUrl {
 
   addParametersToUrl(pageNumber: number, pageLimit: number, user?: string): void {
     let urlInAddressBar = `./gallery.html?page=${pageNumber}&limit=${pageLimit}`;
-    if(user) {
-      urlInAddressBar = `./gallery.html?page=${pageNumber}&limit=${pageLimit}&filter=${user}`;
-    }
+    urlInAddressBar = user ? `./gallery.html?page=${pageNumber}&limit=${pageLimit}&filter=${user}` : urlInAddressBar;
+
     history.replaceState({}, '', urlInAddressBar);
   }
 }
