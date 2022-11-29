@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Login</title>
     <link rel="icon" type="image/x-icon" href='backend/favicons/favicon.ico'>
-</head>
-<body>
-<form id="signUpForm" method="post">
-    <input type="email" name="email" />
-    <input type="password" name="password" />
-    <input type="submit" value="signup" />
+  </head>
+  <body>
+    <form id="signUpForm" method="post">
+      <input type="email" name="email" />
+      <input type="password" name="password" />
+      <input type="submit" value="signup" />
 
-    <div id="emailError"></div>
-    <div id="passwordError"></div>
-</form>
-<script type="module" src='/frontend/signup/signup.js'></script>
-</body>
+      <div id="emailError"></div>
+      <div id="passwordError"></div>
+    </form>
+    <p>
+      <a href="/">Log In</a>
+    </p>
+    <script type="module" src='/frontend/signup/signup.js'></script>
+  </body>
 </html>
