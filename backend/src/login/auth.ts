@@ -3,6 +3,7 @@ import { User } from '../models/user.model.js';
 import * as JWTstrategy from 'passport-jwt';
 import * as ExtractJWT from 'passport-jwt';
 import * as LocalStrategy from 'passport-local';
+import crypto from 'node:crypto';
 
 passport.use(
   'signup',
@@ -13,7 +14,8 @@ passport.use(
     },
     async (email, password, done) => {
       try {
-        const user = await User.create({ email, password });
+        const salt = crypto.randomBytes(16).toString('hex');
+        const user = await User.create({ email, password, salt });
 
         return done(null, user);
       } catch (error) {

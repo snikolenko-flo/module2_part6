@@ -6,6 +6,7 @@ import { log } from '../helper/logger.js';
 import mongoose from 'mongoose';
 import { FileSystemService } from './file.system.service.js';
 import { PER_PAGE } from '../data/constants.js';
+import crypto from 'node:crypto';
 
 const galleryService = new GalleryFile();
 const fsService = new FileSystemService();
@@ -84,6 +85,7 @@ export class DbService {
       const asergeev = new User({
         email: 'asergeev@flo.team',
         password: 'jgF5tn4F',
+        salt: crypto.randomBytes(16).toString('hex')
       });
       await asergeev.save();
       log.info(`The user ${asergeev.email} was saved to DB.`);
@@ -91,6 +93,7 @@ export class DbService {
       const tpupkin = new User({
         email: 'tpupkin@flo.team',
         password: 'tpupkin@flo.team',
+        salt: crypto.randomBytes(16).toString('hex')
       });
       await tpupkin.save();
       log.info(`The user ${tpupkin.email} was saved to DB.`);
@@ -98,6 +101,7 @@ export class DbService {
       const vkotikov = new User({
         email: 'vkotikov@flo.team',
         password: 'po3FGas8',
+        salt: crypto.randomBytes(16).toString('hex')
       });
       await vkotikov.save();
       log.info(`The user ${vkotikov.email} was saved to DB.`);
