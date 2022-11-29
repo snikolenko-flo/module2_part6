@@ -116,11 +116,9 @@ export class DbService {
     return imagesNumber;
   }
 
-  async getUserImagesNumber(user): Promise<number> {
-    const userImages = await User.find({'email': user}).select(['images']);
-    const array = userImages[0]['images'];
-
-    return array.length;
+  async getUserImagesNumber(userEmail: string, limit: number): Promise<number> {
+    const images = await this.getImagesOfUser(userEmail, limit);
+    return images.length;
   }
 
   private async getImagesPerPage(images: string[], page: number, perPage: number): Promise<string[]> {
@@ -151,12 +149,15 @@ export class DbService {
     }
   }
 
+  private async getImagesOfUser(userEmail: string, limit: number): Promise<object[]> {
+    const user = await User.findOne({ 'email': userEmail }).exec();
+    const images = await Image.find({ user: user.id }).select(['path', 'date']).sort({date: -1}).limit(limit);
+    return images;
+  }
+
   async getUserImages(page: number, limit: number, userEmail?: string): Promise<string[]> {
     try {
-
-      const user = await User.findOne({ 'email': userEmail }).exec();
-      const images = await Image.find({ user: user.id }).select(['path', 'date']).sort({date: -1}).limit(limit);
-
+      const images = await this.getImagesOfUser(userEmail, limit);
       const sortedImages = this.sortImagesFromOldToNew(images);
       const imagesPaths = this.retrieveImagesPaths(sortedImages);
 

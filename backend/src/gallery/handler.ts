@@ -22,7 +22,7 @@ export async function getGallery(req: Request, res: Response) {
 
   let total = await manager.file.getTotalPages(IMAGES_DIR);
   if(user) {
-    const userImagesNumber = await dbService.getUserImagesNumber(user);
+    const userImagesNumber = await dbService.getUserImagesNumber(user, pageLimit);
     total = await manager.file.getUserPagesNumber(IMAGES_DIR, userImagesNumber);
   }
 
