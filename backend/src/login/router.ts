@@ -24,9 +24,6 @@ signUpRouter.post(
   '/',
   passport.authenticate('signup', { session: false }),
   async (req, res, next) => {
-    console.log('req.body: ');
-    console.log(req.body);
-
     const body = { email: req.body.email };
     const token = jwt.sign({ user: body }, 'TOP_SECRET');
     return res.json({ token });

@@ -1,6 +1,6 @@
-import { SignupManager } from './signup.manager.js';
+import { AuthManager } from './auth.manager.js';
 
-const manager = new SignupManager();
+const manager = new AuthManager();
 
 export const validateUserInput = (formElement: HTMLFormElement): (() => void) => {
   return () => {
@@ -14,13 +14,14 @@ export const validateUserInput = (formElement: HTMLFormElement): (() => void) =>
   };
 };
 
-export const submitUserData = async (event: Event): Promise<void> => {
+export const signUp = async (event: Event): Promise<void> => {
   event.preventDefault();
+  const { email, password } = await manager.getCredentialsFromEvent(event);
+  await manager.authUser(email, password, 'signup');
+};
 
-  const email: string = (event.target as HTMLFormElement).email.value;
-  const password: string = (event.target as HTMLFormElement).password.value;
-
-  if (manager.isUserDataValid(email, password)) {
-    await manager.signUpUser(email, password);
-  }
+export const logIn = async (event: Event): Promise<void> => {
+  event.preventDefault();
+  const { email, password } = await manager.getCredentialsFromEvent(event);
+  await manager.authUser(email, password, 'login');
 };

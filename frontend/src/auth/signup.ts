@@ -1,6 +1,6 @@
-import { validateUserInput, submitUserData } from './handler.js';
+import { validateUserInput, signUp } from './handler.js';
 
 const signUpForm = document.getElementById('signUpForm') as HTMLFormElement;
 
 signUpForm.onchange = validateUserInput(signUpForm);
-signUpForm.onsubmit = submitUserData;
+signUpForm.onsubmit = signUp;
