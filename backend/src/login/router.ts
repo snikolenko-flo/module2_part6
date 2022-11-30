@@ -5,7 +5,10 @@ import { log } from '../helper/logger.js';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
 import './auth.js';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
+const secret = process.env.SECRET;
 export const loginRouter = express.Router();
 export const signUpRouter = express.Router();
 const fileService = new FileService();
@@ -23,9 +26,9 @@ signUpRouter.get('/', async (req: Request, res: Response) => {
 signUpRouter.post(
   '/',
   passport.authenticate('signup', { session: false }),
-  async (req, res, next) => {
+  async (req, res) => {
     const body = { email: req.body.email };
-    const token = jwt.sign({ user: body }, 'TOP_SECRET');
+    const token = jwt.sign({ user: body }, secret);
     return res.json({ token });
   }
 );
@@ -54,7 +57,7 @@ loginRouter.post(
               if (error) return next(error);
 
               const body = { _id: user._id, email: user.email };
-              const token = jwt.sign({ user: body }, 'TOP_SECRET');
+              const token = jwt.sign({ user: body }, secret);
 
               return res.json({ token });
             }

@@ -4,6 +4,10 @@ import * as JWTstrategy from 'passport-jwt';
 import * as ExtractJWT from 'passport-jwt';
 import * as LocalStrategy from 'passport-local';
 import crypto from 'node:crypto';
+import * as dotenv from 'dotenv';
+dotenv.config();
+
+const secret = process.env.SECRET;
 
 passport.use(
   'signup',
@@ -57,7 +61,7 @@ passport.use(
 passport.use(
   new JWTstrategy.Strategy(
     {
-      secretOrKey: 'TOP_SECRET',
+      secretOrKey: secret,
       jwtFromRequest: ExtractJWT.ExtractJwt.fromHeader('authorization')
     },
     async (payload, done) => {
