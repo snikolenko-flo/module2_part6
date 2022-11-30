@@ -1,5 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import crypto from 'node:crypto';
+import util from 'util';
 
 const UserSchema: Schema = new Schema({
   email: { type: String, required: true, unique: true },
@@ -10,27 +11,17 @@ const UserSchema: Schema = new Schema({
 UserSchema.pre(
   'save',
   async function(next) {
-    const hash = crypto.pbkdf2Sync(this.password, this.salt,
-      1000,
-      64,
-      'sha512'
-    ).toString('hex');
-
-    this.password = hash;
+    const crypt = util.promisify(crypto.pbkdf2);
+    const hash = await crypt(this.password, this.salt, 1000, 64, 'sha512');
+    this.password = hash.toString('hex');
     next();
   }
 );
 
 UserSchema.methods.isValidPassword = async function(password) {
-  const hash = crypto.pbkdf2Sync(
-    password,
-    this.salt,
-    1000,
-    64,
-    'sha512'
-  ).toString('hex');
-
-  return this.password === hash;
+  const crypt = util.promisify(crypto.pbkdf2);
+  const hash = await crypt(password, this.salt, 1000, 64, 'sha512');
+  return this.password === hash.toString('hex');
 };
 
 export const User = mongoose.model('User', UserSchema);
