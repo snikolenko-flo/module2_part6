@@ -7,7 +7,7 @@ export class GalleryUrl {
 
   addParametersToUrl(pageNumber: number, pageLimit: number, user?: string): void {
     let urlInAddressBar = `./gallery.html?page=${pageNumber}&limit=${pageLimit}`;
-    urlInAddressBar = user ? `./gallery.html?page=${pageNumber}&limit=${pageLimit}&filter=${user}` : urlInAddressBar;
+    urlInAddressBar = user ? `${urlInAddressBar}&filter=${user}` : urlInAddressBar;
 
     history.replaceState({}, '', urlInAddressBar);
   }

@@ -6,7 +6,7 @@ export class GalleryApi {
     const accessToken = localStorage.getItem('token');
 
     let url = `${BASE_URL}/gallery?page=${pageNumber}&limit=${pageLimit}`;
-    url = user ? `${BASE_URL}/gallery?page=${pageNumber}&limit=${pageLimit}&filter=${user}` : url;
+    url = user ? `${url}&filter=${user}` : url;
 
     const response = await fetch(url, {
       method: 'GET',
