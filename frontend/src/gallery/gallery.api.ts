@@ -5,8 +5,10 @@ export class GalleryApi {
   async fetchImages(pageNumber: number, pageLimit: number, user?: string): Promise<ImagesResponse> {
     const accessToken = localStorage.getItem('token');
 
+    const defaultPage = 1;
+
     let url = `${BASE_URL}/gallery?page=${pageNumber}&limit=${pageLimit}`;
-    url = user ? `${url}&filter=${user}` : url;
+    url = user ? `${BASE_URL}/gallery?page=${defaultPage}&limit=${pageLimit}&filter=${user}` : url;
 
     const response = await fetch(url, {
       method: 'GET',

@@ -38,7 +38,9 @@ export async function getGallery(req: Request, res: Response) {
   if (pagesAmount > total) pagesAmount = total;
 
   if(user) {
+    log.info(`A user ${user} was specified.`);
     const imagesPaths = await dbService.getUserImages(pageNumber, pageLimit, user);
+    log.info(`Got images for user ${user}.`);
     manager.response.sendImages(res, pagesAmount, imagesPaths);
   } else {
     const imagesPaths = await dbService.getImages(pageNumber, pageLimit);

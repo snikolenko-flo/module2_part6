@@ -6,10 +6,8 @@ const dbService = new DbService();
 
 export class PageService {
   async getLimit(req: Request, res: Response): Promise<void> {
-    console.log('PageService');
     const pageLimit = await dbService.getImagesNumber();
     res.statusCode = 200;
-    console.log(`pageLimit: ${pageLimit}`);
     res.end(
       JSON.stringify({
         limit: pageLimit,
