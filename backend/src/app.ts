@@ -1,11 +1,13 @@
 import * as dotenv from 'dotenv';
 import express from 'express';
-import { loginRouter } from './login/router.js';
+import { loginRouter, signUpRouter } from './login/router.js';
 import { galleryRouter } from './gallery/router.js';
 import { galleryHtmlRouter } from './gallery/gallery.html.router.js';
-import { checkAuthorization } from './services/auth.service.js';
 import { DbService } from './services/db-service.js';
 dotenv.config();
+import './login/auth.js';
+import passport from 'passport';
+import { cors } from './services/cors.js';
 
 const imagesDir = process.env.IMAGES_DIR;
 const mongoUrl = process.env.MONGO_URL;
@@ -17,12 +19,14 @@ dbService.startDb(imagesDir, mongoUrl);
 
 const app = express();
 
+app.use(express.json());
 app.use(express.static('built'));
-app.use('/', loginRouter);
-app.use('/login', loginRouter);
-app.use('/gallery.html', galleryHtmlRouter);
-app.use('/gallery', checkAuthorization, galleryRouter);
-app.use('/upload', checkAuthorization, galleryRouter);
+app.use('/', cors, loginRouter);
+app.use('/signup', cors, signUpRouter);
+app.use('/login', cors, loginRouter);
+app.use('/gallery.html', cors, galleryHtmlRouter);
+app.use('/gallery', cors, passport.authenticate('jwt', { session: false }), galleryRouter);
+app.use('/upload', cors, passport.authenticate('jwt', { session: false }), galleryRouter);
 
 app.listen(port, hostname, () => {
   console.log(`Server is running at http://${hostname}:${port}/`);

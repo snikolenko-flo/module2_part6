@@ -7,7 +7,7 @@ import { TokenResponse } from '../interfaces/token';
 const urlService = new UrlManipulationService();
 const galleryService = new GalleryService();
 
-export class LoginService {
+export class AuthService {
   async redirectToGallery(): Promise<void> {
     const pageNumber: number = urlService.getPageNumberFromUrl();
     let pageLimit: number = urlService.getPageLimitFromUrl();
@@ -40,17 +40,20 @@ export class LoginService {
     return validatedEmail.isValid && validatedPassword.isValid;
   }
 
-  async fetchToken(email: string, password: string): Promise<TokenResponse> {
+  async fetchToken(email: string, password: string, action: string): Promise<TokenResponse> {
     const user = {
       email: email,
       password: password,
     };
 
-    const url = `${BASE_URL}/login`;
+    const url = `${BASE_URL}/${action}`;
 
     const response = await fetch(url, {
       method: 'POST',
       body: JSON.stringify(user),
+      headers: {
+        'Content-Type': 'application/json'
+      },
     });
 
     const result: TokenResponse = await response.json();

@@ -42,6 +42,16 @@ export class GalleryFile {
     return Math.trunc(filesAmount / PER_PAGE) + onePage;
   }
 
+  async getUserPagesNumber(dir: string, filesNumber: number): Promise<number> {
+    const onePage = 1;
+    if (filesNumber <= PER_PAGE) return onePage;
+
+    const remainder = filesNumber % PER_PAGE;
+    if (remainder === 0) return filesNumber / PER_PAGE;
+
+    return Math.trunc(filesNumber / PER_PAGE) + onePage;
+  }
+
   async getTotalPagesForLimit(dir: string, limit: number): Promise<number> {
     const filesAmount = limit;
 

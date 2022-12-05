@@ -23,7 +23,6 @@ Backend part.
 - services - contains additional services
 - users - contains a data about users that are allowed to use this app
 - app.ts - entry point for all requests
-- router.ts - contains all routes  
   
 Frontend part.
 
@@ -34,6 +33,7 @@ Frontend part.
 - interfaces - contains interfaces
 - login - module that is responsible for validating user input and login
 - services - contains additional services
+- signup - module that is responsible for validating user input and signup
 
 # Set up
 
@@ -46,6 +46,7 @@ Set the next variables in the file:
 - BASE_URL=http://127.0.0.1:3000
 - STAGE=dev 
 - MONGO_URL=mongodb://localhost:27017/test
+- SECRET=TOP_SECRET
 
 If you set STAGE="local" all logs will be written to log files.  
 If you set any other value, e.g. STAGE="dev", logs will be displayed in the console.
@@ -59,3 +60,11 @@ Enter valid email and password and click on the login button.
 A first page of a gallery will be opened:
 
 `http://127.0.0.1:3000/gallery.html?page=1`
+
+You can set limit for number of images. E.g.:  
+
+`http://127.0.0.1:3000/gallery.html?page=1&limit=50`
+
+And you also can filter images by user. E.g.:
+
+`http://127.0.0.1:3000/gallery.html?page=1&limit=1&filter=user@mail.com`

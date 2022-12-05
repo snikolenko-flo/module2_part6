@@ -6,12 +6,13 @@ import { log } from '../helper/logger.js';
 import mongoose from 'mongoose';
 import { FileSystemService } from './file.system.service.js';
 import { PER_PAGE } from '../data/constants.js';
+import crypto from 'node:crypto';
 
 const galleryService = new GalleryFile();
 const fsService = new FileSystemService();
 
 export class DbService {
-  async uploadImageData(filePath: string): Promise<void> {
+  async uploadImageData(filePath: string, userEmail: string): Promise<void> {
 
     const fileMetadata = await fsService.getFileMetadata(filePath);
     const pathWithoutBuiltFolder = fsService.removeFirstDirFromPath(filePath);
@@ -19,12 +20,14 @@ export class DbService {
     const isImage = await Image.findOne({ path: pathWithoutBuiltFolder }).exec();
     if (isImage) return;
 
+    const user = await User.findOne({ 'email': userEmail }).exec();
     const date = new Date();
 
     const image = new Image({
       path: pathWithoutBuiltFolder,
       metadata: fileMetadata,
-      date: date
+      date: date,
+      user: user._id
     });
 
     await image.save();
@@ -82,6 +85,7 @@ export class DbService {
       const asergeev = new User({
         email: 'asergeev@flo.team',
         password: 'jgF5tn4F',
+        salt: crypto.randomBytes(16).toString('hex')
       });
       await asergeev.save();
       log.info(`The user ${asergeev.email} was saved to DB.`);
@@ -89,6 +93,7 @@ export class DbService {
       const tpupkin = new User({
         email: 'tpupkin@flo.team',
         password: 'tpupkin@flo.team',
+        salt: crypto.randomBytes(16).toString('hex')
       });
       await tpupkin.save();
       log.info(`The user ${tpupkin.email} was saved to DB.`);
@@ -96,6 +101,7 @@ export class DbService {
       const vkotikov = new User({
         email: 'vkotikov@flo.team',
         password: 'po3FGas8',
+        salt: crypto.randomBytes(16).toString('hex')
       });
       await vkotikov.save();
       log.info(`The user ${vkotikov.email} was saved to DB.`);
@@ -114,6 +120,11 @@ export class DbService {
     return imagesNumber;
   }
 
+  async getUserImagesNumber(userEmail: string, limit: number): Promise<number> {
+    const images = await this.getImagesOfUser(userEmail, limit);
+    return images.length;
+  }
+
   private async getImagesPerPage(images: string[], page: number, perPage: number): Promise<string[]> {
     const endIndex = page * perPage;
     const start = endIndex - perPage;
@@ -130,6 +141,7 @@ export class DbService {
 
   async getImages(page: number, limit: number): Promise<string[]> {
     try {
+
       const images = await Image.find({}).select(['path', 'date']).sort({date: -1}).limit(limit);
 
       const sortedImages = this.sortImagesFromOldToNew(images);
@@ -137,14 +149,32 @@ export class DbService {
 
       return this.getImagesPerPage(imagesPaths, page, PER_PAGE);
     } catch (e) {
-      log.error(`${e} | class: ${this.constructor.name} | function: getItems.`);
+      log.error(`${e} | class: ${this.constructor.name} | function: getImages.`);
+    }
+  }
+
+  private async getImagesOfUser(userEmail: string, limit: number): Promise<object[]> {
+    const user = await User.findOne({ 'email': userEmail }).exec();
+    const images = await Image.find({ user: user.id }).select(['path', 'date']).sort({date: -1}).limit(limit);
+    return images;
+  }
+
+  async getUserImages(page: number, limit: number, userEmail?: string): Promise<string[]> {
+    try {
+      const images = await this.getImagesOfUser(userEmail, limit);
+      const sortedImages = this.sortImagesFromOldToNew(images);
+      const imagesPaths = this.retrieveImagesPaths(sortedImages);
+
+      return this.getImagesPerPage(imagesPaths, page, PER_PAGE);
+    } catch (e) {
+      log.error(`${e} | class: ${this.constructor.name} | function: getImages.`);
     }
   }
 
   private async connectToDb(mongoUrl: string): Promise<void> {
     try {
       await mongoose.connect(mongoUrl);
-      console.log(`Database is running at ${mongoUrl}`);
+      log.info(`Database is running at ${mongoUrl}`);
     } catch (e) {
       log.error(`${e} | class: ${this.constructor.name} | function: connectToDb.`);
     }
