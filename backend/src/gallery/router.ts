@@ -14,9 +14,13 @@ const urlService = new UrlService();
 
 export const galleryRouter = express.Router();
 
-galleryRouter.get('/', async(req, res) => {
+galleryRouter.get('/', async(req, res, next) => {
   log.info(`Request "${req.originalUrl}" is got.`);
-  await getGallery(req, res);
+  try {
+    await getGallery(req, res);
+  } catch (e) {
+    next(e);
+  }
 });
 
 galleryRouter.get('/limit', async(req, res) => {
@@ -34,7 +38,6 @@ galleryRouter.post('/', upload.any('img'), async(req: Request, res: Response): P
     log.error('File was not provided.');
     return;
   }
-
   const filePath = urlService.getPathFromRequest(req);
   await dbService.uploadImageData(filePath, req.user.email);
   await fileService.sendFile(req, res, './built/frontend/html/gallery.html', 'text/html');
