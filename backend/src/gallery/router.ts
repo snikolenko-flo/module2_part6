@@ -23,23 +23,31 @@ galleryRouter.get('/', async(req, res, next) => {
   }
 });
 
-galleryRouter.get('/limit', async(req, res) => {
+galleryRouter.get('/limit', async(req, res, next) => {
   log.info(`Request "${req.originalUrl}" is got.`);
-  await pageService.getLimit(req, res);
+  try {
+    await pageService.getLimit(req, res);
+  } catch (e) {
+    next(e);
+  }
 });
 
-galleryRouter.post('/', upload.any('img'), async(req: Request, res: Response): Promise<void> => {
+galleryRouter.post('/', upload.any('img'), async(req: Request, res: Response, next): Promise<void> => {
   log.info(`Request "${req.originalUrl}" is got.`);
-  const files = req.files;
-  if (!files) {
-    res.status = 400;
-    res.send({error: 'Upload a file please'});
-    res.end();
-    log.error('File was not provided.');
-    return;
+  try {
+    const files = req.files;
+    if (!files) {
+      res.status = 400;
+      res.send({error: 'Upload a file please'});
+      res.end();
+      log.error('File was not provided.');
+      return;
+    }
+    const filePath = urlService.getPathFromRequest(req);
+    await dbService.uploadImageData(filePath, req.user.email);
+    await fileService.sendFile(req, res, './built/frontend/html/gallery.html', 'text/html');
+    log.info('A new image was uploaded to the server.');
+  } catch (e) {
+    next(e);
   }
-  const filePath = urlService.getPathFromRequest(req);
-  await dbService.uploadImageData(filePath, req.user.email);
-  await fileService.sendFile(req, res, './built/frontend/html/gallery.html', 'text/html');
-  log.info('A new image was uploaded to the server.');
 });

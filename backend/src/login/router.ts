@@ -13,23 +13,35 @@ export const loginRouter = express.Router();
 export const signUpRouter = express.Router();
 const fileService = new FileService();
 
-loginRouter.get('/', async (req: Request, res: Response) => {
+loginRouter.get('/', async (req: Request, res: Response, next) => {
   log.info(`Request "${req.originalUrl}" is got.`);
-  await fileService.sendFile(req, res, './built/frontend/html/login.html', 'text/html');
+  try {
+    await fileService.sendFile(req, res, './built/frontend/html/login.html', 'text/html');
+  } catch (e) {
+    next(e);
+  }
 });
 
-signUpRouter.get('/', async (req: Request, res: Response) => {
+signUpRouter.get('/', async (req: Request, res: Response, next) => {
   log.info(`Request "${req.originalUrl}" is got.`);
-  await fileService.sendFile(req, res, './built/frontend/html/signup.html', 'text/html');
+  try {
+    await fileService.sendFile(req, res, './built/frontend/html/signup.html', 'text/html');
+  } catch (e) {
+    next(e);
+  }
 });
 
 signUpRouter.post(
   '/',
   passport.authenticate('signup', { session: false }),
-  async (req, res) => {
-    const body = { email: req.body.email };
-    const token = jwt.sign({ user: body }, secret);
-    return res.json({ token });
+  async (req, res, next) => {
+    try {
+      const body = { email: req.body.email };
+      const token = jwt.sign({ user: body }, secret);
+      return res.json({ token });
+    } catch (e) {
+      next(e);
+    }
   }
 );
 

@@ -5,7 +5,11 @@ import { log } from '../helper/logger.js';
 const fileService = new FileService();
 
 export const galleryHtmlRouter = express.Router();
-galleryHtmlRouter.get('/', async (req: Request, res: Response) => {
+galleryHtmlRouter.get('/', async (req: Request, res: Response, next) => {
   log.info(`Request "${req.originalUrl}" is got.`);
-  await fileService.sendFile(req, res, './built/frontend/html/gallery.html', 'text/html');
+  try {
+    await fileService.sendFile(req, res, './built/frontend/html/gallery.html', 'text/html');
+  } catch (e) {
+    next(e);
+  }
 });

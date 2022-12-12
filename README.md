@@ -68,3 +68,7 @@ You can set limit for number of images. E.g.:
 And you also can filter images by user. E.g.:
 
 `http://127.0.0.1:3000/gallery.html?page=1&limit=1&filter=user@mail.com`
+
+To start the app via pm2 run the command:  
+
+`pm2 start ./built/backend/app.js`
