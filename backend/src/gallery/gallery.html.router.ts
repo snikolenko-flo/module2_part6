@@ -10,6 +10,7 @@ galleryHtmlRouter.get('/', async (req: Request, res: Response, next) => {
   try {
     await fileService.sendFile(req, res, './built/frontend/html/gallery.html', 'text/html');
   } catch (e) {
+    log.error(`The error ${e} has occurred in ./backend/src/gallery/gallery.html.router.js/galleryHtmlRouter.get('/').`);
     next(e);
   }
 });

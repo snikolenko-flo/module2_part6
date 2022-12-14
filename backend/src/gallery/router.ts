@@ -19,6 +19,7 @@ galleryRouter.get('/', async(req, res, next) => {
   try {
     await getGallery(req, res);
   } catch (e) {
+    log.error(`The error ${e} has happened in ./backend/src/gallery/router.js/galleryRouter.get('/')`);
     next(e);
   }
 });
@@ -28,6 +29,7 @@ galleryRouter.get('/limit', async(req, res, next) => {
   try {
     await pageService.getLimit(req, res);
   } catch (e) {
+    log.error(`The error ${e} has happened in ./backend/src/gallery/router.js/galleryRouter.get('/limit')`);
     next(e);
   }
 });
@@ -48,6 +50,7 @@ galleryRouter.post('/', upload.any('img'), async(req: Request, res: Response, ne
     await fileService.sendFile(req, res, './built/frontend/html/gallery.html', 'text/html');
     log.info('A new image was uploaded to the server.');
   } catch (e) {
+    log.error(`The error ${e} has happened in ./backend/src/gallery/router.js/galleryRouter.post('/')`);
     next(e);
   }
 });

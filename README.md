@@ -71,4 +71,4 @@ And you also can filter images by user. E.g.:
 
 To start the app via pm2 run the command:  
 
-`pm2 start ./built/backend/app.js`
+`pm2 start npm -- start`

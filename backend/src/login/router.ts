@@ -18,6 +18,7 @@ loginRouter.get('/', async (req: Request, res: Response, next) => {
   try {
     await fileService.sendFile(req, res, './built/frontend/html/login.html', 'text/html');
   } catch (e) {
+    log.error(`The error ${e} has happened in ./backend/src/login/router.js/loginRouter.get('/')`);
     next(e);
   }
 });
@@ -27,6 +28,7 @@ signUpRouter.get('/', async (req: Request, res: Response, next) => {
   try {
     await fileService.sendFile(req, res, './built/frontend/html/signup.html', 'text/html');
   } catch (e) {
+    log.error(`The error ${e} has happened in ./backend/src/login/router.js/signUpRouter.get('/')`);
     next(e);
   }
 });
@@ -40,6 +42,7 @@ signUpRouter.post(
       const token = jwt.sign({ user: body }, secret);
       return res.json({ token });
     } catch (e) {
+      log.error(`The error ${e} has happened in ./backend/src/login/router.js/signUpRouter.post('/')`);
       next(e);
     }
   }
@@ -55,7 +58,6 @@ loginRouter.post(
         try {
           if (err || !user) {
             const error = new Error(`An error ${err} has occurred for user ${user}.`);
-
             log.error('Email or password are invalid.');
             res.statusCode = 401;
             res.end(JSON.stringify({ errorMessage: 'Email or password are invalid.' }));
@@ -75,6 +77,7 @@ loginRouter.post(
             }
           );
         } catch (error) {
+          log.error(`The error ${error} has happened in ./backend/src/login/router.js/loginRouter.post('/')`);
           return next(error);
         }
       }

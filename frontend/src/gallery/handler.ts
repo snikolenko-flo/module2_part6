@@ -16,7 +16,7 @@ export async function loadGallery(): Promise<void> {
     manager.render.renderImages(images.objects);
     manager.url.addParametersToUrl(pageNumber, pageLimit, user);
   } catch (e) {
-    if (!(e instanceof TypeError)) alert(e);
+    alert(e);
   }
 }
 
@@ -81,4 +81,4 @@ export async function uploadImage(event: Event): Promise<void> {
   } catch (e) {
     alert(e);
   }
-};
+}
