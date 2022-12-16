@@ -154,9 +154,13 @@ export class DbService {
   }
 
   private async getImagesOfUser(userEmail: string, limit: number): Promise<object[]> {
-    const user = await User.findOne({ 'email': userEmail }).exec();
-    const images = await Image.find({ user: user.id }).select(['path', 'date']).sort({date: -1}).limit(limit);
-    return images;
+    try {
+      const user = await User.findOne({ 'email': userEmail }).exec();
+      const images = await Image.find({ user: user.id }).select(['path', 'date']).sort({date: -1}).limit(limit);
+      return images;
+    } catch(e) {
+      log.error(`${e} | class: ${this.constructor.name} | function: getImagesOfUser.`);
+    }
   }
 
   async getUserImages(page: number, limit: number, userEmail?: string): Promise<string[]> {

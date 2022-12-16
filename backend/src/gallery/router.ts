@@ -14,29 +14,43 @@ const urlService = new UrlService();
 
 export const galleryRouter = express.Router();
 
-galleryRouter.get('/', async(req, res) => {
+galleryRouter.get('/', async(req, res, next) => {
   log.info(`Request "${req.originalUrl}" is got.`);
-  await getGallery(req, res);
-});
-
-galleryRouter.get('/limit', async(req, res) => {
-  log.info(`Request "${req.originalUrl}" is got.`);
-  await pageService.getLimit(req, res);
-});
-
-galleryRouter.post('/', upload.any('img'), async(req: Request, res: Response): Promise<void> => {
-  log.info(`Request "${req.originalUrl}" is got.`);
-  const files = req.files;
-  if (!files) {
-    res.status = 400;
-    res.send({error: 'Upload a file please'});
-    res.end();
-    log.error('File was not provided.');
-    return;
+  try {
+    await getGallery(req, res);
+  } catch (e) {
+    log.error(`The error ${e} has happened in ./backend/src/gallery/router.js/galleryRouter.get('/')`);
+    next(e);
   }
+});
 
-  const filePath = urlService.getPathFromRequest(req);
-  await dbService.uploadImageData(filePath, req.user.email);
-  await fileService.sendFile(req, res, './built/frontend/html/gallery.html', 'text/html');
-  log.info('A new image was uploaded to the server.');
+galleryRouter.get('/limit', async(req, res, next) => {
+  log.info(`Request "${req.originalUrl}" is got.`);
+  try {
+    await pageService.getLimit(req, res);
+  } catch (e) {
+    log.error(`The error ${e} has happened in ./backend/src/gallery/router.js/galleryRouter.get('/limit')`);
+    next(e);
+  }
+});
+
+galleryRouter.post('/', upload.any('img'), async(req: Request, res: Response, next): Promise<void> => {
+  log.info(`Request "${req.originalUrl}" is got.`);
+  try {
+    const files = req.files;
+    if (!files) {
+      res.status = 400;
+      res.send({error: 'Upload a file please'});
+      res.end();
+      log.error('File was not provided.');
+      return;
+    }
+    const filePath = urlService.getPathFromRequest(req);
+    await dbService.uploadImageData(filePath, req.user.email);
+    await fileService.sendFile(req, res, './built/frontend/html/gallery.html', 'text/html');
+    log.info('A new image was uploaded to the server.');
+  } catch (e) {
+    log.error(`The error ${e} has happened in ./backend/src/gallery/router.js/galleryRouter.post('/')`);
+    next(e);
+  }
 });

@@ -6,10 +6,9 @@ export class GalleryService {
 
     urlsList.forEach(function (url) {
       images += `<div class="gallery">
-                           <img src="${BASE_URL}/${url}">
-                       </div>`;
+                   <img src="${BASE_URL}/${url}">
+                 </div>`;
     });
-
     return images;
   }
 
@@ -18,10 +17,9 @@ export class GalleryService {
 
     for (let i = 1; i <= totalPages; i++) {
       pagesList += `<a href="">
-                              <li>${i}</li>
-                          </a>`;
+                      <li>${i}</li>
+                    </a>`;
     }
-
     return pagesList;
   }
 
